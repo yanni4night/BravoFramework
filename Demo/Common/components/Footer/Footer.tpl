@@ -1,1 +1,3 @@
-<footer>footer</footer>
+<footer>
+    <center>&copy;{{year}} {{author}}</center>
+</footer>

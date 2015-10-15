@@ -17,6 +17,8 @@ require_once('BravoView/Env.class.php');
 require_once('BravoView/Action.class.php');
 require_once('BravoView/Component.class.php');
 
+date_default_timezone_set('Asia/Shanghai');
+
 final class BravoView {
 
     public function __construct($rootPath, $tplEngineName = 'test') {

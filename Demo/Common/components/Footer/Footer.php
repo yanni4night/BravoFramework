@@ -15,7 +15,10 @@
 <?php
 
 class Footer extends Component {
-    
+
+    protected function getTplData() {
+        return array('year' => date('Y'), 'author' => 'yanni4night.com');
+    }
 }
 
 ?>

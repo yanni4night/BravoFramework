@@ -16,22 +16,24 @@
 require_once('BravoView/TemplateEngine.class.php');
 
 class TestEngine implements TemplateEngine {
-
-    /**
-     * [__construct description]
-     */
-    public function __construct(){
-
-    }
     /**
      * [render description]
-     * @param  [type] $tplFile [description]
-     * @param  [type] $data    [description]
-     * @return [type]          [description]
+     * @param  [string] $tplFile
+     * @param  [array] $data
+     * @return [string]
      * @override_function(render)
      */
     public function render($tplFile, $data){
-        return file_get_contents($tplFile);
+        $content = file_get_contents($tplFile);
+
+        if(!isset($data) || !is_array($data) || !count($data)){
+          return $content;
+        }
+
+        return preg_replace_callback('/\{\{(\w+)\}\}/m', function($matches){
+            global $data;
+            return isset($data[$matches[1]]) ? $data[$matches[1]] : '';
+        }, $content);
     }
 }
 

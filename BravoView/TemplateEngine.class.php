@@ -16,14 +16,6 @@
 require_once('BravoView/Renderer.class.php');
 
 interface TemplateEngine extends Renderer {
-    /**
-     * [render description]
-     * @param  [type] $tplFileName
-     * @param  [type] $data
-     * @return [type]
-     * @overload(Renderer)
-     */
-    public function render($tplFileName, $data);
 }
 
 ?>

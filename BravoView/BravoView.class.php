@@ -14,15 +14,37 @@
 <?php
 
 require_once('BravoView/Env.class.php');
+require_once('BravoView/Action.class.php');
+require_once('BravoView/Component.class.php');
 
 final class BravoView {
 
-    public function __construct($rootPath) {
+    public function __construct($rootPath, $tplEngineName = 'test') {
         Env::setRootPathOnce($rootPath);
+        Env::setRendererOnce($this->resolveTemplateEngine($tplEngineName));
     }
 
-    public function setTplEngine($renderer){
+    private function resolveTemplateEngine($engineName) {
         
+        switch ($engineName) {
+            case 'smarty':
+                include_once('BravoView/engines/SmartyEngine.class.php');
+                $engine = new TwigEngine();
+                break;
+            case 'twig':
+                include_once('BravoView/engines/TwigEngine.class.php');
+                $engine = new SmartyEngine();
+                break;
+            case 'test':
+                include_once('BravoView/engines/TestEngine.class.php');
+                $engine = new TestEngine();
+                break;
+            default:
+                Logger::error("Engine '$engineName' not supported!");
+                break;
+        }
+
+        return isset($engine) ? $engine : null;
     }
 
     /**

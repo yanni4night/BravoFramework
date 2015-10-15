@@ -24,17 +24,17 @@ final class Env {
      * @param [string] $rootPath
      */
     public static function setRootPathOnce($rootPath) {
-        if(!self::$rootPath && is_string($rootPath)){
+        if(!self::$rootPath && isset($rootPath) && is_string($rootPath)){
             self::$rootPath = $rootPath;
         }
     }
 
     /**
      * [setRendererOnce description]
-     * @param [type] $renderer [description]
+     * @param [Renderer] $renderer
      */
     public static function setRendererOnce($renderer) {
-        if(!self::$renderer){
+        if(!self::$renderer && isset($renderer)){
             self::$renderer = $renderer;
         }
     }
@@ -49,7 +49,7 @@ final class Env {
 
     /**
      * [getRenderer description]
-     * @return [type] [description]
+     * @return [Renderer]
      */
     public static function getRenderer(){
         return self::$renderer;

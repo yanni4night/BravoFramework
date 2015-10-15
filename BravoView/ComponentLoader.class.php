@@ -42,7 +42,7 @@ class ComponentLoader implements Loader {
      * [getAbsTplFilePath description]
      * @return [string]
      */
-    protected function getAbsTplFilePath() {
+    protected final function getAbsTplFilePath() {
         $selfClassName = get_class($this);
         return Env::getRootPath() . "/{$this->scope}/{$this->type}/{$this->name}/" . $this->getTplFileName();
     }
@@ -66,7 +66,7 @@ class ComponentLoader implements Loader {
         $componentScope = $componentScopeName[0];
         $componentName = $componentScopeName[1];
 
-        $componentFilePath = Env::getRootPath() . "/$componentScope/components/${componentName}/${componentName}.php";
+        $componentFilePath = Env::getRootPath() . "/$componentScope/components/$componentName/$componentName.php";
         
         if(file_exists($componentFilePath)){
             include_once($componentFilePath);

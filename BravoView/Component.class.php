@@ -13,15 +13,19 @@
 ?>
 <?php
 
-require('TemplateEngine.class.php');
-require('Loader.class.php');
-require('Logger.class.php');
+require_once('BravoView/TemplateEngine.class.php');
+require_once('BravoView/engines/SmartyEngine.class.php');
+require_once('BravoView/engines/TwigEngine.class.php');
+require_once('BravoView/engines/TestEngine.class.php');
+require_once('BravoView/TemplateEngine.class.php');
+require_once('BravoView/ComponentLoader.class.php');
+require_once('BravoView/Logger.class.php');
 
 if(!defined('__DEPS__')) {
-    define('__DEPS__', array());
+    define('__DEPS__', 1);
 }
 
-abstract class Component implements Loader{
+abstract class Component extends ComponentLoader {
 
     // We use a template engine like 'Twig','Smarty' to render HTML.
     protected $templateEngine;
@@ -41,13 +45,44 @@ abstract class Component implements Loader{
      */
     public function __construct($data){
         $this->initialData = isset($data) && !empty($data) ? $data : array();
+        // init engine
+        $this->resolveTemplateEngine();
+    }
+
+    /**
+     * TODO:
+     * @return [type] [description]
+     */
+    private function resolveTemplateEngine() {
+        $engineName = $this->getTemplateEngineName();
+        
+        switch ($engineName) {
+            case 'twig':
+                $engine = new TwigEngine();
+                break;
+            case 'smarty':
+                $engine = new SmartyEngine();
+                break;
+            case 'test':
+                $engine = new TestEngine();
+                break;
+            default:
+                $this->logger->error("Engine '$engineName' not supported!");
+                break;
+        }
+
+        if(isset($engine)){
+            $this->templateEngine = $engine;
+        }
     }
 
     /**
      * [getTemplateEngine description]
-     * @return [type] [description]
+     * @return [string] [description]
      */
-    protected abstract function getTemplateEngine();
+    protected function getTemplateEngineName() {
+        return 'test';// or 'twig'
+    }
 
     /**
      * [getTplFileName description]
@@ -78,39 +113,13 @@ abstract class Component implements Loader{
     }
 
     /**
-     * [render description]
+     * [display description]
      * 
      * @return [string] HTML
      */
-    public final function render(){
-        return $this->templateEngine->render($this->getAbsTplFile(), 
+    public function display(){
+        return $this->templateEngine->render($this->getTplFileName(), 
                 $this->getTplData());
-    }
-
-    /**
-     * [find description]
-     * @param  [string] $componentName
-     * @return [Component]
-     */
-    public final function find($componentName) {
-
-    }
-    /**
-     * [load description]
-     * @param  [string] $componentName
-     * @param  [array] $componentName
-     * @return [string]
-     * @override_function(load, target)
-     */
-    public final function load($componentName, $data) {
-        $componentClass = $this->find($componentName);
-        if($componentClass) {
-            $component = new $componentClass($data);
-            return $component->render();
-        }else {
-            $this->logger->warn('Component "$componentName" not found!');
-            return '';
-        }
     }
 
 }

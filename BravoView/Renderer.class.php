@@ -1,10 +1,10 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * Loader.class.php
+  * Renderer.class.php
   *
   * changelog
-  * 2015-10-15[12:02:50]:revised
+  * 2015-10-15[14:29:23]:revised
   *
   * @author yinyong02@baidu.com
   * @version 0.1.0
@@ -14,9 +14,8 @@
 
 <?php
 
-interface Loader {
-    public function load($target, $extra);
-    public function find($target);
+interface Renderer {
+    public function render($tplFileName, $data);
 }
 
 ?>

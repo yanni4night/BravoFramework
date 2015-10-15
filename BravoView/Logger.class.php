@@ -14,11 +14,23 @@
 
 <?php
 
-interface Logger {
-    public function log($msg);
-    public function info($msg);
-    public function warn($msg);
-    public function error($msg);
+final class Logger {
+    public static function log($msg){
+        echo $msg;
+    }
+
+    public static function info($msg){
+        echo $msg;
+    }
+
+    public static function warn($msg){
+        echo $msg;
+    }
+
+    public static function error($msg){
+        echo $msg;
+    }
+
 }
 
 ?>

@@ -13,9 +13,9 @@
 ?>
 
 <?php
-class Hello extends Component {
-    protected function getTplFileName() {
-        return dirname(__FILE__) . '/tpl.tpl';
-    }
+
+class World extends Component {
+   
 }
+
 ?>

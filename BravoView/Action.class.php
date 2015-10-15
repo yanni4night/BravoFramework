@@ -17,6 +17,11 @@ require_once('BravoView/Component.class.php');
 
 abstract class Action extends Component {
 
+    public function __construct($actionScope, $actionName, $data) {
+        parent::__construct($actionScope, $actionName, $data);
+        $this->setType('actions');
+    }
+
     public final function run() {
         return $this->display();
     }

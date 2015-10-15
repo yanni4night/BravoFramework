@@ -30,7 +30,6 @@ abstract class Component extends ComponentLoader {
     // We use a template engine like 'Twig','Smarty' to render HTML.
     protected $templateEngine;
 
-
     private $initialData = null;
 
     private $logger = null; //TODO:init
@@ -43,7 +42,8 @@ abstract class Component extends ComponentLoader {
      * [__construct description]
      * @param [array] $data
      */
-    public function __construct($data){
+    public function __construct($scope, $name, $data){
+        parent::__construct($scope, $name);
         $this->initialData = isset($data) && !empty($data) ? $data : array();
         // init engine
         $this->resolveTemplateEngine();
@@ -67,7 +67,7 @@ abstract class Component extends ComponentLoader {
                 $engine = new TestEngine();
                 break;
             default:
-                $this->logger->error("Engine '$engineName' not supported!");
+                Logger::error("Engine '$engineName' not supported!");
                 break;
         }
 
@@ -82,22 +82,6 @@ abstract class Component extends ComponentLoader {
      */
     protected function getTemplateEngineName() {
         return 'test';// or 'twig'
-    }
-
-    /**
-     * [getTplFileName description]
-     * @return [type] [description]
-     */
-    protected function getTplFileName() {
-        return 'tpl.tpl';
-    }
-
-    /**
-     * [getAbsTplFilePath description]
-     * @return [string]
-     */
-    protected final function getAbsTplFilePath() {
-        return dirname(__FILE__) . '/' . $this->getTplFileName();
     }
 
     /**
@@ -118,7 +102,7 @@ abstract class Component extends ComponentLoader {
      * @return [string] HTML
      */
     public function display(){
-        return $this->templateEngine->render($this->getTplFileName(), 
+        return $this->templateEngine->render($this->getAbsTplFilePath(), 
                 $this->getTplData());
     }
 

@@ -17,8 +17,6 @@ require_once('BravoView/Action.class.php');
 require_once('BravoView/Component.class.php');
 require_once('BravoView/Env.class.php');
 
-const CONTROLLER_ROOT = '/actions/';
-
 final class BravoView {
 
     public function __construct($rootPath) {
@@ -27,14 +25,19 @@ final class BravoView {
 
     /**
      * [action description]
-     * @param  [type] $actionName [description]
+     * @param  [type] $actionPath [description]
      * @return [type]             [description]
      */
-    public function action($actionName) {
-        $actionFile = Env::getRootPath() . CONTROLLER_ROOT ."/${actionName}Action.php";
+    public function action($actionPath) {
+        $action = explode(':', $actionPath);
+
+        $actionScope = $action[0];
+        $actionName = $action[1];
+
+        $actionFile = Env::getRootPath() . "/$actionScope/actions/${actionName}/${actionName}.php";
         include($actionFile);
-        $actionClassName = ucfirst("${actionName}Action");
-        $action = new $actionClassName(null);
+        $actionClassName = ucfirst("${actionName}");
+        $action = new $actionClassName($actionScope, $actionName, null);
         echo $action->run();
     }
 }

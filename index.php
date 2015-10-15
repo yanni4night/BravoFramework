@@ -13,14 +13,10 @@
 ?>
 <?php
 
-require('BravoView/BravoView.class.php');
+// Entry of BravoView
+require_once('BravoView/BravoView.class.php');
 
-$action = isset($_GET['action']) && !empty($_GET['action']) ? $_GET['action'] : 'index';
-
-$rootPath = dirname(__FILE__);
-
-$bravoView = new BravoView($rootPath);
-
-$bravoView->action($action);
+// Entry of business
+require('Demo/index.php');
 
 ?>

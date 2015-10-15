@@ -13,8 +13,6 @@
 ?>
 <?php
 
-require_once('BravoView/Action.class.php');
-require_once('BravoView/Component.class.php');
 require_once('BravoView/Env.class.php');
 
 final class BravoView {
@@ -23,10 +21,14 @@ final class BravoView {
         Env::setRootPathOnce($rootPath);
     }
 
+    public function setTplEngine($renderer){
+        
+    }
+
     /**
      * [action description]
-     * @param  [type] $actionPath [description]
-     * @return [type]             [description]
+     * @param  [type] $actionPath
+     * @return [type]
      */
     public function action($actionPath) {
         $action = explode(':', $actionPath);

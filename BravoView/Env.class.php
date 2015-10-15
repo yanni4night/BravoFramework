@@ -17,6 +17,7 @@
 final class Env {
     
     private static $rootPath;
+    private static $renderer;
 
     /**
      * [setRootPathOnce description]
@@ -29,11 +30,29 @@ final class Env {
     }
 
     /**
+     * [setRendererOnce description]
+     * @param [type] $renderer [description]
+     */
+    public static function setRendererOnce($renderer) {
+        if(!self::$renderer){
+            self::$renderer = $renderer;
+        }
+    }
+
+    /**
      * [getRootPath description]
      * @return [string]
      */
     public static function getRootPath() {
         return self::$rootPath;
+    }
+
+    /**
+     * [getRenderer description]
+     * @return [type] [description]
+     */
+    public static function getRenderer(){
+        return self::$renderer;
     }
 }
 ?>

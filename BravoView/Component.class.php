@@ -13,11 +13,7 @@
 ?>
 <?php
 
-require_once('BravoView/TemplateEngine.class.php');
-require_once('BravoView/engines/SmartyEngine.class.php');
-require_once('BravoView/engines/TwigEngine.class.php');
-require_once('BravoView/engines/TestEngine.class.php');
-require_once('BravoView/TemplateEngine.class.php');
+require_once('BravoView/Renderer.class.php');
 require_once('BravoView/ComponentLoader.class.php');
 require_once('BravoView/Logger.class.php');
 
@@ -27,8 +23,7 @@ if(!defined('__DEPS__')) {
 
 abstract class Component extends ComponentLoader {
 
-    // We use a template engine like 'Twig','Smarty' to render HTML.
-    protected $templateEngine;
+    protected $renderer;
 
     private $initialData = null;
 
@@ -51,19 +46,22 @@ abstract class Component extends ComponentLoader {
 
     /**
      * TODO:
-     * @return [type] [description]
+     * @return [type]
      */
     private function resolveTemplateEngine() {
         $engineName = $this->getTemplateEngineName();
         
         switch ($engineName) {
-            case 'twig':
+            case 'smarty':
+                include_once('BravoView/engines/SmartyEngine.class.php');
                 $engine = new TwigEngine();
                 break;
-            case 'smarty':
+            case 'twig':
+                include_once('BravoView/engines/TwigEngine.class.php');
                 $engine = new SmartyEngine();
                 break;
             case 'test':
+                include_once('BravoView/engines/TestEngine.class.php');
                 $engine = new TestEngine();
                 break;
             default:
@@ -72,7 +70,7 @@ abstract class Component extends ComponentLoader {
         }
 
         if(isset($engine)){
-            $this->templateEngine = $engine;
+            $this->renderer = $engine;
         }
     }
 
@@ -102,7 +100,7 @@ abstract class Component extends ComponentLoader {
      * @return [string] HTML
      */
     public function display(){
-        return $this->templateEngine->render($this->getAbsTplFilePath(), 
+        return $this->renderer->render($this->getAbsTplFilePath(), 
                 $this->getTplData());
     }
 

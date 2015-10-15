@@ -35,7 +35,7 @@ class ComponentLoader implements Loader {
      * @return [type] [description]
      */
     protected function getTplFileName() {
-        return 'tpl.tpl';
+        return "{$this->name}.tpl";
     }
 
     /**

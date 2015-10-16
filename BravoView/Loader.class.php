@@ -11,8 +11,8 @@
   * @since 0.1.0
   */
 ?>
-
 <?php
+namespace BravoView;
 
 interface Loader {
     public function load($target, $extra);

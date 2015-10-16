@@ -11,8 +11,8 @@
   * @since 0.1.0
   */
 ?>
-
 <?php
+namespace BravoView;
 
 require_once('BravoView/Renderer.class.php');
 require_once('BravoView/ComponentLoader.class.php');

@@ -11,10 +11,10 @@
   * @since 0.1.0
   */
 ?>
-
 <?php
+namespace Index;
 
-class Index extends Action {
+class Index extends \BravoView\Action {
 
     public function display(){
         //Just test

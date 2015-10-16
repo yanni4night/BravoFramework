@@ -11,8 +11,8 @@
   * @since 0.1.0
   */
 ?>
-
 <?php
+namespace BravoView;
 
 require_once('BravoView/Loader.class.php');
 require_once('BravoView/Env.class.php');
@@ -85,7 +85,8 @@ class ComponentLoader implements Loader {
     public final function load($componentPath, $data) {
         $componentClass = $this->find($componentPath);
         if($componentClass) {
-            $component = new $componentClass[1]($componentClass[0], $componentClass[1], $data);
+            $componentClassPath = "\\${componentClass[0]}\\${componentClass[1]}";
+            $component = new $componentClassPath($componentClass[0], $componentClass[1], $data);
             return $component->display();
         }else {
             Logger::warn("Component '$componentPath' not found!");

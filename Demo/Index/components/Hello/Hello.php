@@ -11,10 +11,10 @@
   * @since 0.1.0
   */
 ?>
-
 <?php
+namespace Index;
 
-class Hello extends Component {
+class Hello extends \BravoView\Component {
    public function display(){
         return parent::display() . $this->load('Index:World', null);
    }

@@ -11,8 +11,8 @@
   * @since 0.1.0
   */
 ?>
-
 <?php
+namespace BravoView;
 
 final class Logger {
   

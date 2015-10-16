@@ -11,10 +11,10 @@
   * @since 0.1.0
   */
 ?>
-
 <?php
+namespace Index;
 
-class World extends Component {
+class World extends \BravoView\Component {
    
 }
 

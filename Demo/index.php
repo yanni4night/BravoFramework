@@ -18,7 +18,7 @@ $actionPath = isset($_GET['action']) && !empty($_GET['action']) ? $_GET['action'
 
 $rootPath = dirname(__FILE__);
 
-$bravoView = new BravoView($rootPath);
+$bravoView = new \BravoView\BravoView($rootPath);
 
 $bravoView->action($actionPath);
 

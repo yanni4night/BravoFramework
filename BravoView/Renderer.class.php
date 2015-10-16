@@ -11,8 +11,8 @@
   * @since 0.1.0
   */
 ?>
-
 <?php
+namespace BravoView;
 
 interface Renderer {
     public function render($tplFileName, $data);

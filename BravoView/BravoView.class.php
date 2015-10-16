@@ -11,8 +11,8 @@
   * @since 0.1.0
   */
 ?>
-
 <?php
+namespace BravoView;
 
 require_once('BravoView/Env.class.php');
 require_once('BravoView/Action.class.php');
@@ -63,8 +63,8 @@ final class BravoView {
 
         $actionFile = Env::getRootPath() . "/$actionScope/actions/${actionName}/${actionName}.php";
         include($actionFile);
-        $actionClassName = ucfirst("${actionName}");
-        $action = new $actionClassName($actionScope, $actionName, null);
+        $actionClassPath = "\\$actionScope\\$actionName";
+        $action = new $actionClassPath($actionScope, $actionName, null);
         echo $action->run();
     }
 }

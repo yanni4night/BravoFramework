@@ -11,10 +11,10 @@
   * @since 0.1.0
   */
 ?>
-
 <?php
+namespace Common;
 
-class Footer extends Component {
+class Footer extends \BravoView\Component {
 
     protected function getTplData() {
         return array('year' => date('Y'), 'author' => 'yanni4night.com');

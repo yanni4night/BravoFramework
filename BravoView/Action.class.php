@@ -12,6 +12,7 @@
   */
 ?>
 <?php
+namespace BravoView;
 
 require_once('BravoView/Component.class.php');
 

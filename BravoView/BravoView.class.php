@@ -61,10 +61,11 @@ final class BravoView {
         $actionScope = $action[0];
         $actionName = $action[1];
 
-        $actionFile = Env::getRootPath() . "/$actionScope/actions/${actionName}/${actionName}.php";
+        $actionFile = Env::getRootPath() . "/$actionScope/actions/${actionName}Action/${actionName}Action.php";
+        // TODO:
         include($actionFile);
         $actionClassPath = "\\$actionScope\\${actionName}Action";
-        $action = new $actionClassPath($actionScope, $actionName, null);
+        $action = new $actionClassPath(null);
         echo $action->run();
     }
 }

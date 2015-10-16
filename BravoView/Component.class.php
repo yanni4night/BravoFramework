@@ -34,8 +34,8 @@ abstract class Component extends ComponentLoader {
      * [__construct description]
      * @param [array] $data
      */
-    public function __construct($scope, $name, $data){
-        parent::__construct($scope, $name);
+    public function __construct($data){
+        parent::__construct();
         $this->initialData = isset($data) && !empty($data) ? $data : array();
     }
 

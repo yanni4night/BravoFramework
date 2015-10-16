@@ -22,20 +22,18 @@ class ComponentLoader implements Loader {
 
     private $type = 'components';
 
-    protected $scope = null;
-    protected $name = null;
+    private $scope = null;
+    private $name = null;
 
-    protected function __construct($scope, $name) {
-        $this->scope = $scope;
-        $this->name = $name;
-    }
+    public function __construct(){}
 
     /**
      * [getTplFileName description]
      * @return [type] [description]
      */
     protected function getTplFileName() {
-        return "{$this->name}.tpl";
+        $name = $this->getName();
+        return "$name.tpl";
     }
 
     /**
@@ -43,38 +41,44 @@ class ComponentLoader implements Loader {
      * @return [string]
      */
     protected final function getAbsTplFilePath() {
-        $selfClassName = get_class($this);
-        return Env::getRootPath() . "/{$this->scope}/{$this->type}/{$this->name}/" . $this->getTplFileName();
+        $name = $this->getName();
+        $scope = $this->getScope();
+        return Env::getRootPath() . "/$scope/{$this->type}/$name/" . $this->getTplFileName();
     }
 
     /**
      * [setType description]
-     * @param [type] $type [description]
+     * @param [string] $type
      */
     protected final function setType($type) {
         $this->type = $type;
     }
 
     /**
-     * [find description]
-     * @param  [string] $componentName
-     * @return [Component]
+     * [getName description]
+     * @return [string]
      */
-    public final function find($componentPath) {
-        $componentScopeName = explode(':', $componentPath);
-
-        $componentScope = $componentScopeName[0];
-        $componentName = $componentScopeName[1];
-
-        $componentFilePath = Env::getRootPath() . "/$componentScope/components/$componentName/$componentName.php";
-        
-        if(file_exists($componentFilePath)){
-            include_once($componentFilePath);
-            return array($componentScope, $componentName);
-        }else {
-            return null;
+    public final function getName() {
+        if(!$this->name) {
+            $nameSections = explode("\\", get_class($this));
+            $this->name = $nameSections[count($nameSections) - 1];
         }
+
+        return $this->name;
     }
+
+    /**
+     * [getScope description]
+     * @return [string]
+     */
+    public final function getScope() {
+        if(!$this->scope) {
+            $this->scope = preg_replace(array("/\\\\\w+$/", "/\\\\/"), array('', '/'), get_class($this));
+        }
+
+        return $this->scope;
+    }
+
     /**
      * [load description]
      * @param  [string] $componentName
@@ -85,13 +89,16 @@ class ComponentLoader implements Loader {
     public final function load($componentPath, $data) {
         $componentClass = $this->find($componentPath);
         if($componentClass) {
-            $componentClassPath = "\\${componentClass[0]}\\${componentClass[1]}";
-            $component = new $componentClassPath($componentClass[0], $componentClass[1], $data);
+            $component = new $componentClass($data);
             return $component->display();
         }else {
             Logger::warn("Component '$componentPath' not found!");
             return '';
         }
+    }
+
+    public final function find($componentPath) {
+        return Env::requireComponent($componentPath);
     }
 }
 

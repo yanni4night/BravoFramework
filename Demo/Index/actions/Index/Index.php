@@ -18,7 +18,7 @@ class Index extends \BravoView\Action {
 
     public function display(){
         //Just test
-        return parent::display() . $this->load('Index:Hello', null) . $this->load('Common:Footer', null);
+        return parent::display() . $this->load('Index:Hello', null) . $this->load('Index:China', null) . $this->load('Common:Footer', null);
     }
 }
 

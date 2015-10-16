@@ -15,9 +15,7 @@
 namespace Index;
 
 class Hello extends \BravoView\Component {
-   public function display(){
-        return parent::display() . $this->load('Index:World', null);
-   }
+
 }
 
 ?>

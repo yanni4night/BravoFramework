@@ -54,5 +54,11 @@ final class Env {
     public static function getRenderer(){
         return self::$renderer;
     }
+
+    public static function requireComponent($component){
+        $componentScopeName = explode(':', $component);
+        $componentPath = self::getRootPath() . "/${componentScopeName[0]}/components/${componentScopeName[1]}/${componentScopeName[1]}.php";
+        include_once($componentPath);
+    }
 }
 ?>

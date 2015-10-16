@@ -14,10 +14,12 @@
 <?php
 namespace Index;
 
+\BravoView\Env::requireComponent('Index:World');
+
 class China extends World {
 
     public function display() {
-        return 'China';
+        return '<font size="+5" color="red">China</font>';
     }
 }
 

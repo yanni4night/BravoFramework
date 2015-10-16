@@ -11,6 +11,7 @@
   * @since 0.1.0
   */
 ?>
+
 <?php
 
 require_once('BravoView/TemplateEngine.class.php');
@@ -30,8 +31,7 @@ class TestEngine implements TemplateEngine {
           return $content;
         }
 
-        return preg_replace_callback('/\{\{(\w+)\}\}/m', function($matches){
-            global $data;
+        return preg_replace_callback('/\{\{(\w+)\}\}/m', function($matches) use($data){
             return isset($data[$matches[1]]) ? $data[$matches[1]] : '';
         }, $content);
     }

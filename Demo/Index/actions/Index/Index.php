@@ -14,7 +14,7 @@
 <?php
 namespace Index;
 
-class Index extends \BravoView\Action {
+class IndexAction extends \BravoView\Action {
 
     public function display(){
         //Just test

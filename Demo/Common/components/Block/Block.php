@@ -1,10 +1,10 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * Hello.php
+  * Block.php
   *
   * changelog
-  * 2015-10-15[17:09:12]:revised
+  * 2015-10-16[13:06:03]:revised
   *
   * @author yinyong02@baidu.com
   * @version 0.1.0
@@ -12,12 +12,9 @@
   */
 ?>
 <?php
-namespace Index;
+namespace Common;
 
-\BravoView\Env::requireComponent('Common:Block');
-
-class World extends \Common\Block {
-   
+class Block extends \BravoView\Component {
+    
 }
-
 ?>

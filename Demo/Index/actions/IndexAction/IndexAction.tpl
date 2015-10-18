@@ -1,1 +1,1 @@
-<center>Action</center>
+<center>{{app}} Action</center>

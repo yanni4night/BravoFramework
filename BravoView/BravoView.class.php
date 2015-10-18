@@ -22,6 +22,8 @@ date_default_timezone_set('Asia/Shanghai');
 
 final class BravoView {
 
+    private $defaultAction = 'Index:index';
+
     public function __construct($rootPath, $tplEngineName = 'test') {
         Env::setRootPathOnce($rootPath);
         Env::setRendererOnce($this->resolveTemplateEngine($tplEngineName));
@@ -55,18 +57,30 @@ final class BravoView {
      * @param  [type] $actionPath
      * @return [type]
      */
-    public function action($actionPath) {
+    public function action($actionPath, $data = array()) {
         $action = explode(':', $actionPath);
 
         $actionScope = $action[0];
         $actionName = $action[1];
 
         $actionFile = Env::getRootPath() . "/$actionScope/actions/${actionName}Action/${actionName}Action.php";
-        // TODO:
-        include($actionFile);
-        $actionClassPath = "\\$actionScope\\${actionName}Action";
-        $action = new $actionClassPath(null);
-        echo $action->run();
+        
+        if(file_exists($actionFile)) {
+            include($actionFile);
+            $actionClassPath = "\\$actionScope\\${actionName}Action";
+            $action = new $actionClassPath($data);
+            echo $action->run();
+        }else {
+            return $this->action($this->defaultAction, $data);
+        }
+    }
+
+    /**
+     * [setDefaultAction description]
+     * @param [string] $defaultAction
+     */
+    public function setDefaultAction($defaultAction){
+      $this->defaultAction = $defaultAction;
     }
 }
 

@@ -20,6 +20,6 @@ $rootPath = dirname(__FILE__);
 
 $bravoView = new \BravoView\BravoView($rootPath);
 
-$bravoView->action($actionPath);
+$bravoView->action($actionPath, array('app' => 'demo'));
 
 ?>

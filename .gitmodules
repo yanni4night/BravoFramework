@@ -1,3 +1,6 @@
 [submodule "BravoView/thirty/smarty"]
 	path = BravoView/thirty/smarty
 	url = https://github.com/smarty-php/smarty.git
+[submodule "BravoView/thirty/twig"]
+	path = BravoView/thirty/twig
+	url = https://github.com/twigphp/Twig.git

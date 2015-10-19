@@ -149,6 +149,7 @@ class Component implements Loader {
      */
     public final function load($componentPath, $data) {
         $componentClass = $this->requires($componentPath);
+        
         if($componentClass) {
             $component = new $componentClass($data);
             return $component->display();
@@ -195,9 +196,8 @@ class Component implements Loader {
         if(file_exists($componentPhpPath)){
             include_once($componentPhpPath);
             $componentClass = "\\${componentScopeName[0]}\\${componentScopeName[1]}";
-            return class_exists($componentClass) ? $componentPath : NULL;
+            return class_exists($componentClass) ? $componentClass : NULL;
         }else {
-            Logger::warn("Component '$component' not found!");
             return NULL;
         }
         

@@ -14,6 +14,9 @@
 <?php
 namespace BravoView;
 
+/**
+ * 日志记录器。
+ */
 final class Logger {
   
     public static function log($msg){

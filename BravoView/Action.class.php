@@ -16,6 +16,9 @@ namespace BravoView;
 
 require_once('BravoView/Component.class.php');
 
+/**
+ * Action 指一个页面的入口模块。
+ */
 abstract class Action extends Component {
 
     public function __construct($data) {
@@ -23,6 +26,11 @@ abstract class Action extends Component {
         $this->setType('actions');
     }
 
+    /**
+     * 输出页面所有HTML。
+     * 
+     * @return [string] 页面HTML
+     */
     public final function run() {
         return $this->display();
     }

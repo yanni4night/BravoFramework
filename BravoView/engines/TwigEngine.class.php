@@ -19,25 +19,19 @@ require_once('BravoView/thirty/twig/lib/Twig/Autoloader.php');
 
 \Twig_Autoloader::register();
 
-
+/**
+ * Twig 模板引擎。
+ */
 class TwigEngine implements TemplateEngine {
     private $twig;
-    /**
-     * [__construct description]
-     */
+
     public function __construct($cacheDir){
         $loader = new \Twig_Loader_Filesystem('/');
         $this->twig = new \Twig_Environment($loader, array(
             'cache' => False //$cacheDir
         ));
     }
-    /**
-     * [render description]
-     * @param  [type] $tplFile [description]
-     * @param  [type] $data    [description]
-     * @return [type]          [description]
-     * @override_function(render)
-     */
+
     public function render($tplFile, $data = array()){
         return $this->twig->render($tplFile, $data);
     }

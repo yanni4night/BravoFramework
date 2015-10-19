@@ -16,21 +16,15 @@ namespace BravoView;
 
 require_once('BravoView/TemplateEngine.class.php');
 
+/**
+ * Smarty模板引擎。
+ */
 class SmartyEngine implements TemplateEngine {
 
-    /**
-     * [__construct description]
-     */
     public function __construct(){
 
     }
-    /**
-     * [render description]
-     * @param  [type] $tplFile [description]
-     * @param  [type] $data    [description]
-     * @return [type]          [description]
-     * @override_function(render)
-     */
+
     public function render($tplFile, $data){
 
     }

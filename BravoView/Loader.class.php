@@ -14,7 +14,17 @@
 <?php
 namespace BravoView;
 
+/**
+ * Loader 代表资源 "加载器"。
+ */
 interface Loader {
+    /**
+     * 加载一个资源。
+     * 
+     * @param  [string] $target 目标资源
+     * @param  [mixin] $extra 额外参数
+     * @return [mixin] 加载的资源
+     */
     public function load($target, $extra);
 }
 

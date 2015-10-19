@@ -16,6 +16,9 @@ namespace BravoView;
 
 require_once('BravoView/Renderer.class.php');
 
+/**
+ * TemplateEngine 代表模板引擎。
+ */
 interface TemplateEngine extends Renderer {
 }
 

@@ -22,26 +22,46 @@ if(!defined('__DEP' . 'S__')) {
     define('__DEP' . 'S__', 1);
 }
 
+/**
+ * Component 代表模块化的实体。它拥有以下功能：
+ * 
+ * 1. 利用数据和模板输出HTML;
+ * 2. 调用其它 Component;
+ * 
+ */
 class Component implements Loader {
 
+    // 数据
     private $initialData = null;
 
-    // Compile '__DEPS__' to real dependencies array which contains
-    // all the components' names.
+    // 编译脚本应该将此编译为该Component依赖的所有依赖模块的数组
     private $dependencies = __DEPS__;
 
+    // 类型，用以路径查找
     private $type = 'components';
 
-    private $scope = null;
+    // 空间
+    private $namespace = null;
+
+    // 名称
     private $name = null;
 
+    /**
+     * 构造一个 Component。
+     * 
+     * @param [array] $data 初始数据
+     */
     public function __construct($data){
         $this->initialData = isset($data) && !empty($data) ? $data : array();
     }
 
     /**
-     * [getTplFileName description]
-     * @return [type] [description]
+     * 获取模版名，仅支持一个文件。
+     *
+     * 默认查找与该 Component 同名的文件，后缀"tpl"，
+     * 覆写该方法用于使用其它文件。
+     * 
+     * @return [string] 模板文件名
      */
     protected function getTplFileName() {
         $name = $this->getName();
@@ -49,10 +69,9 @@ class Component implements Loader {
     }
 
     /**
-     * You should override it to define the data 
-     * your template use.
-     * 
-     * TODO:merge data
+     * 获取渲染模板的数据。
+     *
+     * 默认使用初始数据，覆写该方法以使用其它数据。
      * 
      * @return [array]
      */
@@ -61,13 +80,14 @@ class Component implements Loader {
     }
 
     /**
-     * [getAbsTplFilePath description]
-     * @return [string]
+     * 获取模板文件的绝对路径。
+     * 
+     * @return [string] 绝对路径名
      */
     protected final function getAbsTplFilePath() {
         $name = $this->getName();
-        $scope = $this->getScope();
-        return Env::getRootPath() . "/$scope/{$this->type}/$name/" . $this->getTplFileName();
+        $namespace = $this->getNamespace();
+        return Env::getRootPath() . "/$namespace/{$this->type}/$name/" . $this->getTplFileName();
     }
 
     /**
@@ -79,8 +99,9 @@ class Component implements Loader {
     }
 
     /**
-     * [getName description]
-     * @return [string]
+     * 获取该 Component 的名称。
+     * 
+     * @return [string] 名称
      */
     public final function getName() {
         if(!$this->name) {
@@ -92,33 +113,39 @@ class Component implements Loader {
     }
 
     /**
-     * [getScope description]
-     * @return [string]
+     * 获取该 Component 的空间。
+     * 
+     * @return [string] 空间名
      */
-    public final function getScope() {
-        if(!$this->scope) {
-            $this->scope = preg_replace(array("/\\\\\w+$/", "/\\\\/"), array('', '/'), get_class($this));
+    public final function getNamespace() {
+        if(!$this->namespace) {
+            $this->namespace = preg_replace(array("/\\\\\w+$/", "/\\\\/"), array('', '/'), get_class($this));
         }
 
-        return $this->scope;
+        return $this->namespace;
     }
 
     /**
-     * [getPath description]
-     * @return [type] [description]
+     * 获取该 Component 的路径。
+     * 
+     * 路径定义为 空间 + : + 名称。
+     * 
+     * @return [string] 路径名
      */
     public final function getPath() {
         $name = $this->getName();
-        $scope = $this->getScope();
-        return "$scope:$name";
+        $namespace = $this->getNamespace();
+        return "$namespace:$name";
     }
 
     /**
-     * [load description]
-     * @param  [string] $componentName
-     * @param  [array] $componentName
-     * @return [string]
-     * @override_function(load, Loader)
+     * 加载一个 Component。
+     *
+     * 如果目标 Component 不存在，则反馈空字符串。
+     * 
+     * @param  [string] $componentPath 目标 Component 路径
+     * @param  [array] $data 目标 Component 初始数据
+     * @return [string] 目标 Component 的类名
      */
     public final function load($componentPath, $data) {
         $componentClass = $this->find($componentPath);
@@ -132,19 +159,21 @@ class Component implements Loader {
     }
 
     /**
+     * 查询一个 Component。同 Component:requireComponent()。
      * 
-     * @param  [string] $componentPath component path
-     * @return [string] component class name with namespace
-     * @override_function(find, Loader)
+     * @param  [string] $componentPath 目标 Component 路径
+     * @return [string] 目标 Component 类名
      */
     public final function find($componentPath) {
         return self::requireComponent($componentPath);
     }
 
     /**
-     * [display description]
+     * 使用模板和数据输出构造好的 HTML。
+     *
+     * 覆写该方法以支持自定义内容。
      * 
-     * @return [string] HTML
+     * @return [string] HTML 输出的HTML
      */
     public function display(){
         return Env::getRenderer()->render($this->getAbsTplFilePath(), 
@@ -152,9 +181,12 @@ class Component implements Loader {
     }
 
     /**
-     * [requireComponent description]
-     * @param  [type] $component
-     * @return [type]
+     * 获取一个 Component 的类名。
+     *
+     * 如果目标 Component 不存在，则返回空字符串。
+     * 
+     * @param  [string] $component 目标 Component 路径
+     * @return [string] 目标 Component 类名
      */
     public static final function requireComponent($component){
         $componentScopeName = explode(':', $component);

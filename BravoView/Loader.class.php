@@ -16,7 +16,6 @@ namespace BravoView;
 
 interface Loader {
     public function load($target, $extra);
-    public function find($target);
 }
 
 ?>

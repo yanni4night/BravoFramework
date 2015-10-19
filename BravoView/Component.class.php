@@ -148,7 +148,7 @@ class Component implements Loader {
      * @return [string] 目标 Component 的类名
      */
     public final function load($componentPath, $data) {
-        $componentClass = $this->find($componentPath);
+        $componentClass = $this->requires($componentPath);
         if($componentClass) {
             $component = new $componentClass($data);
             return $component->display();
@@ -159,12 +159,12 @@ class Component implements Loader {
     }
 
     /**
-     * 查询一个 Component。同 Component:requireComponent()。
+     * 加载并获取一个 Component。同 Component:requireComponent()。
      * 
      * @param  [string] $componentPath 目标 Component 路径
      * @return [string] 目标 Component 类名
      */
-    public final function find($componentPath) {
+    public final function requires($componentPath) {
         return self::requireComponent($componentPath);
     }
 
@@ -181,7 +181,7 @@ class Component implements Loader {
     }
 
     /**
-     * 获取一个 Component 的类名。
+     * 加载并获取一个 Component 的类名。
      *
      * 如果目标 Component 不存在，则返回空字符串。
      * 

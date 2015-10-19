@@ -17,7 +17,7 @@ namespace Common;
 class Footer extends \BravoView\Component {
 
     protected function getTplData() {
-        $utilsClass = $this->find('Common:Utils');
+        $utilsClass = $this->requires('Common:Utils');
         $utils = new $utilsClass(null);
         return array('year' => $utils->now(), 'author' => 'yanni4night.com');
     }

@@ -55,23 +55,5 @@ final class Env {
         return self::$renderer;
     }
 
-    /**
-     * [requireComponent description]
-     * @param  [type] $component
-     * @return [type]
-     */
-    public static function requireComponent($component){
-        $componentScopeName = explode(':', $component);
-        $componentPhpPath = self::getRootPath() . "/${componentScopeName[0]}/components/${componentScopeName[1]}/${componentScopeName[1]}.php";
-
-        if(file_exists($componentPhpPath)){
-            include_once($componentPhpPath);
-            return "\\${componentScopeName[0]}\\${componentScopeName[1]}";
-        }else {
-            Logger::warn("Component '$component' not found!");
-        }
-        
-    }
-
 }
 ?>

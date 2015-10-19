@@ -138,7 +138,7 @@ class Component implements Loader {
      * @override_function(find, Loader)
      */
     public final function find($componentPath) {
-        return Env::requireComponent($componentPath);
+        return self::requireComponent($componentPath);
     }
 
     /**
@@ -149,6 +149,24 @@ class Component implements Loader {
     public function display(){
         return Env::getRenderer()->render($this->getAbsTplFilePath(), 
                 $this->getTplData());
+    }
+
+    /**
+     * [requireComponent description]
+     * @param  [type] $component
+     * @return [type]
+     */
+    public static final function requireComponent($component){
+        $componentScopeName = explode(':', $component);
+        $componentPhpPath = Env::getRootPath() . "/${componentScopeName[0]}/components/${componentScopeName[1]}/${componentScopeName[1]}.php";
+
+        if(file_exists($componentPhpPath)){
+            include_once($componentPhpPath);
+            return "\\${componentScopeName[0]}\\${componentScopeName[1]}";
+        }else {
+            Logger::warn("Component '$component' not found!");
+        }
+        
     }
 }
 

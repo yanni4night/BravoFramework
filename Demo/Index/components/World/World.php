@@ -14,7 +14,7 @@
 <?php
 namespace Index;
 
-\BravoView\Env::requireComponent('Common:Block');
+\BravoView\Component::requireComponent('Common:Block');
 
 class World extends \Common\Block {
    

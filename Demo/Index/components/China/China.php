@@ -14,7 +14,7 @@
 <?php
 namespace Index;
 
-\BravoView\Env::requireComponent('Index:World');
+\BravoView\Component::requireComponent('Index:World');
 
 class China extends World {
 

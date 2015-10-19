@@ -147,7 +147,7 @@ class Component implements Loader {
      * @param  [array] $data 目标 Component 初始数据
      * @return [string] 目标 Component 的类名
      */
-    public final function load($componentPath, $data) {
+    public final function load($componentPath, $data = array()) {
         $componentClass = $this->requires($componentPath);
         
         if($componentClass) {
@@ -177,8 +177,8 @@ class Component implements Loader {
      * @return [string] HTML 输出的HTML
      */
     public function display(){
-        return Env::getRenderer()->render($this->getAbsTplFilePath(), 
-                $this->getTplData());
+        $finalTplData = array_merge(array('__self' => $this), $this->getTplData());
+        return Env::getRenderer()->render($this->getAbsTplFilePath(), $finalTplData);
     }
 
     /**

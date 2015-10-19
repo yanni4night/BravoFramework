@@ -32,12 +32,12 @@ final class BravoView {
     private function resolveTemplateEngine($engineName) {
         
         switch ($engineName) {
-            case 'smarty':
-                include_once('BravoView/engines/SmartyEngine.class.php');
-                $engine = new TwigEngine();
-                break;
             case 'twig':
                 include_once('BravoView/engines/TwigEngine.class.php');
+                $engine = new TwigEngine(dirname(__FILE__) . '/cache');
+                break;
+            case 'smarty':
+                include_once('BravoView/engines/SmartyEngine.class.php');
                 $engine = new SmartyEngine();
                 break;
             case 'test':

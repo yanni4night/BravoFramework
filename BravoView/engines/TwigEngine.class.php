@@ -15,14 +15,21 @@
 namespace BravoView;
 
 require_once('BravoView/TemplateEngine.class.php');
+require_once('BravoView/thirty/twig/lib/Twig/Autoloader.php');
+
+\Twig_Autoloader::register();
+
 
 class TwigEngine implements TemplateEngine {
-
+    private $twig;
     /**
      * [__construct description]
      */
-    public function __construct(){
-
+    public function __construct($cacheDir){
+        $loader = new \Twig_Loader_Filesystem('/');
+        $this->twig = new \Twig_Environment($loader, array(
+            'cache' => False //$cacheDir
+        ));
     }
     /**
      * [render description]
@@ -31,8 +38,8 @@ class TwigEngine implements TemplateEngine {
      * @return [type]          [description]
      * @override_function(render)
      */
-    public function render($tplFile, $data){
-
+    public function render($tplFile, $data = array()){
+        return $this->twig->render($tplFile, $data);
     }
 }
 

@@ -18,7 +18,7 @@ $actionPath = isset($_GET['action']) && !empty($_GET['action']) ? $_GET['action'
 
 $rootPath = dirname(__FILE__);
 
-$bravoView = new \BravoView\BravoView($rootPath);
+$bravoView = new \BravoView\BravoView($rootPath, 'twig');
 
 $bravoView->action($actionPath, array('app' => 'demo'));
 

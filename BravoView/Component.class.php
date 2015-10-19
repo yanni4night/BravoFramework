@@ -183,7 +183,7 @@ class Component implements Loader {
     /**
      * 加载并获取一个 Component 的类名。
      *
-     * 如果目标 Component 不存在，则返回空字符串。
+     * 如果目标 Component 不存在，则返回NULL。
      * 
      * @param  [string] $component 目标 Component 路径
      * @return [string] 目标 Component 类名
@@ -194,9 +194,11 @@ class Component implements Loader {
 
         if(file_exists($componentPhpPath)){
             include_once($componentPhpPath);
-            return "\\${componentScopeName[0]}\\${componentScopeName[1]}";
+            $componentClass = "\\${componentScopeName[0]}\\${componentScopeName[1]}";
+            return class_exists($componentClass) ? $componentPath : NULL;
         }else {
             Logger::warn("Component '$component' not found!");
+            return NULL;
         }
         
     }

@@ -18,8 +18,6 @@ require_once('BravoView/Env.class.php');
 require_once('BravoView/Action.class.php');
 require_once('BravoView/Component.class.php');
 
-date_default_timezone_set('Asia/Shanghai');
-
 /**
  * BravoView代表一个 application,是框架的入口。
  */

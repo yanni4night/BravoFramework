@@ -18,8 +18,8 @@ require_once('BravoView/Loader.class.php');
 require_once('BravoView/Env.class.php');
 require_once('BravoView/Logger.class.php');
 
-if(!defined('__DEPS__')) {
-    define('__DEPS__', 1);
+if(!defined('__DEP' . 'S__')) {
+    define('__DEP' . 'S__', 1);
 }
 
 class Component implements Loader {
@@ -101,6 +101,16 @@ class Component implements Loader {
         }
 
         return $this->scope;
+    }
+
+    /**
+     * [getPath description]
+     * @return [type] [description]
+     */
+    public final function getPath() {
+        $name = $this->getName();
+        $scope = $this->getScope();
+        return "$scope:$name";
     }
 
     /**

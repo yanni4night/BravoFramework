@@ -46,13 +46,33 @@ class Component implements Loader {
     // 名称
     private $name = null;
 
+    // 父加载器
+    private $loader = null;
+
     /**
      * 构造一个 Component。
      * 
      * @param [array] $data 初始数据
      */
-    public function __construct($data){
+    public function __construct($data) {
         $this->initialData = isset($data) && is_array($data) && !empty($data) ? $data : array();
+    }
+
+    private function setLoader($loader) {
+        if($loader instanceof Loader) {
+            $this->loader = $loader;
+        }
+    }
+
+    /**
+     * 获取本 Component 的父加载器。
+     *
+     * 只有使用 load 方法加载的Component才有父加载器。
+     * 
+     * @return [Loader] 父加载器
+     */
+    public final function getLoader() {
+        return $this->loader;
     }
 
     /**
@@ -73,7 +93,7 @@ class Component implements Loader {
      *
      * 默认使用初始数据，覆写该方法以使用其它数据。
      * 
-     * @return [array]
+     * @return [array] 模板数据
      */
     protected function getTplData() {
         return $this->initialData;
@@ -107,8 +127,9 @@ class Component implements Loader {
     }
 
     /**
-     * [setType description]
-     * @param [string] $type
+     * 设置类型。
+     * 
+     * @param [string] $type 类型
      */
     protected final function setType($type) {
         $this->type = $type;
@@ -168,6 +189,7 @@ class Component implements Loader {
 
         if($componentClass) {
             $component = new $componentClass($data);
+            $component->setLoader($this);
             return $component->display();
         }else {
             Logger::warn("Component '$componentPath' not found!");
@@ -192,7 +214,7 @@ class Component implements Loader {
      * 
      * @return [string] HTML 输出的HTML
      */
-    public function display(){
+    public function display() {
         $finalTplData = array_merge(array('__self' => $this), $this->initialData, $this->getTplData());
         return Env::getRenderer()->render($this->getAbsTplFilePath(), $finalTplData);
     }
@@ -205,7 +227,7 @@ class Component implements Loader {
      * @param  [string] $component 目标 Component 路径
      * @return [string] 目标 Component 类名
      */
-    public static final function requireComponent($component){
+    public static final function requireComponent($component) {
         $componentScopeName = explode(':', $component);
         $componentPhpPath = Env::getRootPath() . "/${componentScopeName[0]}/components/${componentScopeName[1]}/${componentScopeName[1]}.php";
 

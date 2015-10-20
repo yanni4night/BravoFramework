@@ -21,7 +21,7 @@
     {% autoescape false %}
     {{__self.load('Index:Hello', user)}}
     {% endautoescape %}
-
+    {% include __self.getAbsTplFilePath("footer.tpl") %}
   </body>
   <script type="text/javascript"></script>
 </html>

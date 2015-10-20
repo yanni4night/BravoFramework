@@ -117,13 +117,14 @@ class Component implements Loader {
 
     /**
      * 获取模板文件的绝对路径。
-     * 
+     *
+     * @param [string] $file 模板文件名
      * @return [string] 绝对路径名
      */
-    protected final function getAbsTplFilePath() {
+    public final function getAbsTplFilePath($file = NULL) {
         $name = $this->getName();
         $namespace = $this->getNamespace();
-        return Env::getRootPath() . "/$namespace/{$this->type}/$name/" . $this->getTplFileName();
+        return Env::getRootPath() . "/$namespace/{$this->type}/$name/" . (isset($file) ? $file : $this->getTplFileName());
     }
 
     /**

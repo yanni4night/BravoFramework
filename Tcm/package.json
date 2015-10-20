@@ -1,0 +1,24 @@
+{
+  "name": "Tcm",
+  "version": "1.0.0",
+  "description": "Tieba component manager",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yanni4night/tcm.git"
+  },
+  "keywords": [
+    "tieba",
+    "component",
+    "manager"
+  ],
+  "author": "yanni4night@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yanni4night/tcm/issues"
+  },
+  "homepage": "https://github.com/yanni4night/tcm"
+}

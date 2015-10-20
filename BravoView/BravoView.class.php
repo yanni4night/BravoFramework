@@ -83,7 +83,7 @@ final class BravoView {
         if(file_exists($actionFile)) {
             include($actionFile);
             $actionClassPath = "\\$actionScope\\${actionName}Action";
-            if(class_exists($actionClassPath)) {
+            if(class_exists($actionClassPath, False)) {
                 $action = new $actionClassPath($data);
                 echo $action->run();
             } else {

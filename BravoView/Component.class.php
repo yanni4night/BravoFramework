@@ -235,7 +235,7 @@ class Component implements Loader {
         if(file_exists($componentPhpPath)){
             include_once($componentPhpPath);
             $componentClass = "\\${componentScopeName[0]}\\${componentScopeName[1]}";
-            return class_exists($componentClass) ? $componentClass : NULL;
+            return class_exists($componentClass, False) ? $componentClass : NULL;
         }else {
             return NULL;
         }

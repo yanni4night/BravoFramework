@@ -16,6 +16,9 @@ namespace Index;
 
 class Hello extends \BravoView\Component {
 
+    protected function getTplData() {
+        return array('user' => $this->getData());
+    }
 }
 
 ?>

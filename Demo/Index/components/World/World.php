@@ -18,6 +18,10 @@ namespace Index;
 
 class World extends \Common\Block {
    
+   protected function getTplData() {
+        $user = $this->getData('user');
+        return array('user' => $user);
+   }
 }
 
 ?>

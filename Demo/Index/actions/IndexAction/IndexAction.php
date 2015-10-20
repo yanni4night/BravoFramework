@@ -16,10 +16,9 @@ namespace Index;
 
 class IndexAction extends \BravoView\Action {
 
-    /*public function display(){
-        //Just test
-        return parent::display() . $this->load('Index:Hello', null) . $this->load('Index:China', null) . $this->load('Common:Footer', null);
-    }*/
+    public function getTplData(){
+        return array('user' => array('name' => 'yanni4night', 'gender' => 'male'));
+    }
 }
 
 ?>

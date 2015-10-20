@@ -32,7 +32,7 @@ if(!defined('__DEP' . 'S__')) {
 class Component implements Loader {
 
     // 数据
-    private $initialData = null;
+    private $initialData = array();
 
     // 编译脚本应该将此编译为该Component依赖的所有依赖模块的数组
     private $dependencies = __DEPS__;
@@ -52,7 +52,7 @@ class Component implements Loader {
      * @param [array] $data 初始数据
      */
     public function __construct($data){
-        $this->initialData = isset($data) && !empty($data) ? $data : array();
+        $this->initialData = isset($data) && is_array($data) && !empty($data) ? $data : array();
     }
 
     /**
@@ -75,8 +75,24 @@ class Component implements Loader {
      * 
      * @return [array]
      */
-    protected function getTplData(){
+    protected function getTplData() {
         return $this->initialData;
+    }
+
+    /**
+     * 获取数据，该数据为初始化 Component 调用构造函数时传入的数组。
+     *
+     * 如果$key为NULL或不传，则返回所有数据。
+     * 
+     * @param  [string] $key 数据的索引
+     * @return [mixin]      获取到的数据
+     */
+    public final function getData($key = NULL) {
+        if(isset($key) && is_string($key) && !is_null($key)) {
+            return isset($this->initialData[$key]) ? $this->initialData[$key] : NULL;
+        } else {
+            return $this->initialData;
+        }
     }
 
     /**
@@ -149,7 +165,7 @@ class Component implements Loader {
      */
     public final function load($componentPath, $data = array()) {
         $componentClass = $this->requires($componentPath);
-        
+
         if($componentClass) {
             $component = new $componentClass($data);
             return $component->display();
@@ -177,7 +193,7 @@ class Component implements Loader {
      * @return [string] HTML 输出的HTML
      */
     public function display(){
-        $finalTplData = array_merge(array('__self' => $this), $this->getTplData());
+        $finalTplData = array_merge(array('__self' => $this), $this->initialData, $this->getTplData());
         return Env::getRenderer()->render($this->getAbsTplFilePath(), $finalTplData);
     }
 

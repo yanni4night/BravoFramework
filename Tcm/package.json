@@ -1,7 +1,8 @@
 {
-  "name": "Tcm",
-  "version": "1.0.0",
+  "name": "tcm",
+  "version": "0.1.0",
   "description": "Tieba component manager",
+  "bin": "bin/tcm",
   "main": "index.js",
   "scripts": {
     "test": "grunt"
@@ -20,5 +21,10 @@
   "bugs": {
     "url": "https://github.com/yanni4night/tcm/issues"
   },
-  "homepage": "https://github.com/yanni4night/tcm"
+  "homepage": "https://github.com/yanni4night/tcm",
+  "dependencies": {
+    "read": "~1.0.7",
+    "promzard": "~0.3.0",
+    "async": "~1.4.2"
+  }
 }

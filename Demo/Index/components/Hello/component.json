@@ -1,0 +1,8 @@
+{
+    "path": "Index:Hello",
+    "author": "yinyong",
+    "description": "",
+    "dependencies": {
+        "Index:World": "~1.0.0"
+    }
+}

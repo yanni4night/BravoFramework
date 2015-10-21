@@ -1,0 +1,8 @@
+{
+    "path": "Index:IndexAction",
+    "author": "yinyong",
+    "description": "",
+    "dependencies": {
+        "Index:Hello": "~1.0.0"
+    }
+}

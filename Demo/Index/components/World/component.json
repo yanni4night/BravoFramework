@@ -1,0 +1,8 @@
+{
+    "path": "Index:World",
+    "author": "yinyong",
+    "description": "",
+    "dependencies": {
+        "Common:Block": "~1.0.0"
+    }
+}

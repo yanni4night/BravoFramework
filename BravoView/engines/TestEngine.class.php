@@ -12,14 +12,13 @@
   */
 ?>
 <?php
-namespace BravoView;
 
 require_once('BravoView/TemplateEngine.class.php');
 
 /**
  * 测试用模板引擎，仅支持一级"{{variable}}" 语法输出变量。
  */
-class TestEngine implements TemplateEngine {
+class BravoView_TestEngine implements BravoView_TemplateEngine {
 
     public function render($tplFile, $data){
         $content = file_get_contents($tplFile);

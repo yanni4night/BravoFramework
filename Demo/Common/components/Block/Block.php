@@ -12,9 +12,8 @@
   */
 ?>
 <?php
-namespace Common;
 
-class Block extends \BravoView\Component {
+class Common_Block extends BravoView_Component {
     
 }
 ?>

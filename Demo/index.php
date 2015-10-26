@@ -14,11 +14,11 @@
 
 <?php
 
-$actionPath = isset($_GET['action']) && !empty($_GET['action']) ? $_GET['action'] : 'Index:index';
+$actionPath = isset($_GET['action']) && !empty($_GET['action']) ? $_GET['action'] : 'Index:Index';
 
 $rootPath = dirname(__FILE__);
 
-$bravoView = new \BravoView\BravoView($rootPath, 'twig');
+$bravoView = new BravoView($rootPath, 'twig');
 
 $bravoView->action($actionPath, array('app' => 'demo'));
 

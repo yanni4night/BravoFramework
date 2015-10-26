@@ -12,12 +12,11 @@
   */
 ?>
 <?php
-namespace BravoView;
 
 /**
  * Loader 代表资源 "加载器"。
  */
-interface Loader {
+interface BravoView_Loader {
     /**
      * 加载一个资源。
      * 

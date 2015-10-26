@@ -12,9 +12,8 @@
   */
 ?>
 <?php
-namespace Common;
 
-class Footer extends \BravoView\Component {
+class Common_Footer extends BravoView_Component {
 
     protected function getTplData() {
         $utilsClass = $this->requires('Common:Utils');

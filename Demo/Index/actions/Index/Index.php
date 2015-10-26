@@ -12,9 +12,8 @@
   */
 ?>
 <?php
-namespace Index;
 
-class IndexAction extends \BravoView\Action {
+class Index_IndexAction extends BravoView_Action {
 
     public function getTplData(){
         return array('user' => array('name' => 'yanni4night', 'gender' => 'male'));

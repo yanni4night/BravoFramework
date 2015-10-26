@@ -12,9 +12,8 @@
   */
 ?>
 <?php
-namespace Common;
 
-class Utils extends \BravoView\Component {
+class Common_Utils extends BravoView_Component {
     
     public function now() {
         return date('Y-m-d H:i:s');

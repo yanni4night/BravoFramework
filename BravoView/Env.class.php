@@ -12,14 +12,13 @@
   */
 ?>
 <?php
-namespace BravoView;
 
 require_once('BravoView/Renderer.class.php');
 
 /**
  * Env 是一个环境单例类。
  */
-final class Env {
+final class BravoView_Env {
     
     private static $rootPath;
     private static $renderer;
@@ -46,7 +45,7 @@ final class Env {
      * @param [Renderer] $renderer Renderer
      */
     public static function setRendererOnce($renderer) {
-        if(!self::$renderer && isset($renderer) && $renderer instanceof Renderer){
+        if(!self::$renderer && isset($renderer) && $renderer instanceof BravoView_Renderer){
             self::$renderer = $renderer;
         }
     }

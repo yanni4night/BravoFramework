@@ -12,11 +12,10 @@
   */
 ?>
 <?php
-namespace Index;
 
-\BravoView\Component::requireComponent('Index:World');
+BravoView_Component::requireComponent('Index:World');
 
-class China extends World {
+class Index_China extends Index_World {
 
     public function display() {
         return '<font size="+5" color="red">China</font>';

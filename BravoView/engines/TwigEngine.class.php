@@ -12,22 +12,21 @@
   */
 ?>
 <?php
-namespace BravoView;
 
 require_once('BravoView/TemplateEngine.class.php');
 require_once('BravoView/thirty/twig/lib/Twig/Autoloader.php');
 
-\Twig_Autoloader::register();
+Twig_Autoloader::register();
 
 /**
  * Twig 模板引擎。
  */
-class TwigEngine implements TemplateEngine {
+class BravoView_TwigEngine implements BravoView_TemplateEngine {
     private $twig;
 
     public function __construct($cacheDir){
-        $loader = new \Twig_Loader_Filesystem('/');
-        $this->twig = new \Twig_Environment($loader, array(
+        $loader = new Twig_Loader_Filesystem('/');
+        $this->twig = new Twig_Environment($loader, array(
             'cache' => False //$cacheDir
         ));
     }

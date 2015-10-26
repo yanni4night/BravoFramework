@@ -12,7 +12,6 @@
   */
 ?>
 <?php
-namespace BravoView;
 
 require_once('BravoView/Loader.class.php');
 require_once('BravoView/Env.class.php');
@@ -29,7 +28,7 @@ if(!defined('__DEP' . 'S__')) {
  * 2. 调用其它 Component;
  * 
  */
-class Component implements Loader {
+class BravoView_Component implements BravoView_Loader {
 
     // 数据
     private $initialData = array();
@@ -54,7 +53,9 @@ class Component implements Loader {
      * 
      * @param [array] $data 初始数据
      */
-    public function __construct($data) {
+    public function __construct($namespace, $name, $data) {
+        $this->namespace = $namespace;
+        $this->name = $name;
         $this->initialData = isset($data) && is_array($data) && !empty($data) ? $data : array();
     }
 
@@ -124,7 +125,7 @@ class Component implements Loader {
     public final function getAbsTplFilePath($file = NULL) {
         $name = $this->getName();
         $namespace = $this->getNamespace();
-        return Env::getRootPath() . "/$namespace/{$this->type}/$name/" . (isset($file) ? $file : $this->getTplFileName());
+        return BravoView_Env::getRootPath() . "/$namespace/{$this->type}/$name/" . (isset($file) ? $file : $this->getTplFileName());
     }
 
     /**
@@ -142,11 +143,6 @@ class Component implements Loader {
      * @return [string] 名称
      */
     public final function getName() {
-        if(!$this->name) {
-            $nameSections = explode("\\", get_class($this));
-            $this->name = $nameSections[count($nameSections) - 1];
-        }
-
         return $this->name;
     }
 
@@ -156,10 +152,6 @@ class Component implements Loader {
      * @return [string] 空间名
      */
     public final function getNamespace() {
-        if(!$this->namespace) {
-            $this->namespace = preg_replace(array("/\\\\\w+$/", "/\\\\/"), array('', '/'), get_class($this));
-        }
-
         return $this->namespace;
     }
 
@@ -186,14 +178,15 @@ class Component implements Loader {
      * @return [string] 目标 Component 的类名
      */
     public final function load($componentPath, $data = array()) {
-        $componentClass = $this->requires($componentPath);
-
-        if($componentClass) {
-            $component = new $componentClass($data);
+        $componentScopeName = $this->requires($componentPath);
+        $componentClass = "${componentScopeName[0]}_${componentScopeName[1]}";
+        
+        if($componentScopeName) {
+            $component = new $componentClass($componentScopeName[0], $componentScopeName[1], $data);
             $component->setLoader($this);
             return $component->display();
         }else {
-            Logger::warn("Component '$componentPath' not found!");
+            BravoView_Logger::warn("Component '$componentPath' not found!");
             return '';
         }
     }
@@ -217,7 +210,7 @@ class Component implements Loader {
      */
     public function display() {
         $finalTplData = array_merge(array('__self' => $this), $this->initialData, $this->getTplData());
-        return Env::getRenderer()->render($this->getAbsTplFilePath(), $finalTplData);
+        return BravoView_Env::getRenderer()->render($this->getAbsTplFilePath(), $finalTplData);
     }
 
     /**
@@ -226,16 +219,21 @@ class Component implements Loader {
      * 如果目标 Component 不存在，则返回NULL。
      * 
      * @param  [string] $component 目标 Component 路径
-     * @return [string] 目标 Component 类名
+     * @return [array] 
      */
     public static final function requireComponent($component) {
         $componentScopeName = explode(':', $component);
-        $componentPhpPath = Env::getRootPath() . "/${componentScopeName[0]}/components/${componentScopeName[1]}/${componentScopeName[1]}.php";
+
+        if(2 !== count($componentScopeName)) {
+            return NULL;
+        }
+
+        $componentPhpPath = BravoView_Env::getRootPath() . "/${componentScopeName[0]}/components/${componentScopeName[1]}/${componentScopeName[1]}.php";
 
         if(file_exists($componentPhpPath)){
             include_once($componentPhpPath);
-            $componentClass = "\\${componentScopeName[0]}\\${componentScopeName[1]}";
-            return class_exists($componentClass, False) ? $componentClass : NULL;
+            $componentClass = "${componentScopeName[0]}_${componentScopeName[1]}";
+            return class_exists($componentClass, False) ? $componentScopeName : NULL;
         }else {
             return NULL;
         }

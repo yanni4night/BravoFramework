@@ -12,7 +12,6 @@
   */
 ?>
 <?php
-namespace BravoView;
 
 require_once('BravoView/Env.class.php');
 require_once('BravoView/Action.class.php');
@@ -24,7 +23,7 @@ require_once('BravoView/Component.class.php');
 final class BravoView {
 
     // 默认 acion
-    private $defaultAction = 'Index:index';
+    private $defaultAction = 'Index:Index';
 
     /**
      * 初始化 Bravo application。
@@ -33,8 +32,8 @@ final class BravoView {
      * @param string $tplEngineName [description]
      */
     public function __construct($rootPath, $tplEngineName = 'test') {
-        Env::setRootPathOnce($rootPath);
-        Env::setRendererOnce($this->resolveTemplateEngine($tplEngineName));
+        BravoView_Env::setRootPathOnce($rootPath);
+        BravoView_Env::setRendererOnce($this->resolveTemplateEngine($tplEngineName));
     }
 
     /**
@@ -48,18 +47,18 @@ final class BravoView {
         switch ($engineName) {
             case 'twig':
                 include_once('BravoView/engines/TwigEngine.class.php');
-                $engine = new TwigEngine(dirname(__FILE__) . '/cache');
+                $engine = new BravoView_TwigEngine(dirname(__FILE__) . '/cache');
                 break;
             case 'smarty':
                 include_once('BravoView/engines/SmartyEngine.class.php');
-                $engine = new SmartyEngine();
+                $engine = new BravoView_SmartyEngine();
                 break;
             case 'test':
                 include_once('BravoView/engines/TestEngine.class.php');
-                $engine = new TestEngine();
+                $engine = new BravoView_TestEngine();
                 break;
             default:
-                Logger::error("Engine '$engineName' not supported!");
+                BravoView_Logger::error("Engine '$engineName' not supported!");
                 break;
         }
 
@@ -75,16 +74,17 @@ final class BravoView {
     public function action($actionPath, $data = array()) {
         $action = explode(':', $actionPath);
 
-        $actionScope = $action[0];
-        $actionName = $action[1];
+        $actionScope = ucfirst($action[0]);
+        $actionName = ucfirst($action[1]);
 
-        $actionFile = Env::getRootPath() . "/$actionScope/actions/${actionName}Action/${actionName}Action.php";
-        
+        $actionFile = BravoView_Env::getRootPath() . "/$actionScope/actions/${actionName}/${actionName}.php";
+
         if(file_exists($actionFile)) {
-            include($actionFile);
-            $actionClassPath = "\\$actionScope\\${actionName}Action";
+            include_once($actionFile);
+            $actionClassPath = "${actionScope}_${actionName}Action";
+
             if(class_exists($actionClassPath, False)) {
-                $action = new $actionClassPath($data);
+                $action = new $actionClassPath($actionScope, $actionName, $data);
                 echo $action->run();
             } else {
                 return $this->action($this->defaultAction, $data);

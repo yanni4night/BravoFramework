@@ -12,12 +12,11 @@
   */
 ?>
 <?php
-namespace BravoView;
 
 /**
  * 日志记录器。
  */
-final class Logger {
+final class BravoView_Logger {
   
     public static function log($msg){
         echo $msg;

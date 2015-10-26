@@ -12,9 +12,8 @@
   */
 ?>
 <?php
-namespace Index;
 
-class Hello extends \BravoView\Component {
+class Index_Hello extends BravoView_Component {
 
     protected function getTplData() {
         return array('user' => $this->getData());

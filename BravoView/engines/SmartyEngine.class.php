@@ -12,14 +12,13 @@
   */
 ?>
 <?php
-namespace BravoView;
 
 require_once('BravoView/TemplateEngine.class.php');
 
 /**
  * Smarty模板引擎。
  */
-class SmartyEngine implements TemplateEngine {
+class BravoView_SmartyEngine implements BravoView_TemplateEngine {
 
     public function __construct(){
 

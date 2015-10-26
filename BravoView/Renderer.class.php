@@ -12,12 +12,11 @@
   */
 ?>
 <?php
-namespace BravoView;
 
 /**
  * Renderer 代表一个"渲染器"。
  */
-interface Renderer {
+interface BravoView_Renderer {
     /**
      * 使用数据和模板文件渲染出HTML。
      * 

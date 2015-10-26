@@ -1,7 +1,7 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * Hello.php
+  * World.php
   *
   * changelog
   * 2015-10-15[17:09:12]:revised
@@ -12,11 +12,10 @@
   */
 ?>
 <?php
-namespace Index;
 
-\BravoView\Component::requireComponent('Common:Block');
+BravoView_Component::requireComponent('Common:Block');
 
-class World extends \Common\Block {
+class Index_World extends Common_Block {
 
    protected function getTplData() {
         $user = $this->getData('user');

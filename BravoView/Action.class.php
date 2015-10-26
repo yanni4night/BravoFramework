@@ -12,17 +12,16 @@
   */
 ?>
 <?php
-namespace BravoView;
 
 require_once('BravoView/Component.class.php');
 
 /**
  * Action 指一个页面的入口模块。
  */
-abstract class Action extends Component {
+abstract class BravoView_Action extends BravoView_Component {
 
-    public function __construct($data) {
-        parent::__construct($data);
+    public function __construct($scope, $name, $data) {
+        parent::__construct($scope, $name, $data);
         $this->setType('actions');
     }
 

@@ -19,7 +19,7 @@
       <h2>{{__self.getPath()}}</h2>
   </div>
     {% autoescape false %}
-    {{__self.load('Index:Hello', user)}}
+    {{__self.load('Index:Top', {'user': user})}}
     {% endautoescape %}
     {% include __self.getAbsTplFilePath("footer.tpl") %}
   </body>

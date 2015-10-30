@@ -179,7 +179,7 @@ class BravoView_Component implements BravoView_Loader {
      */
     public final function load($componentPath, $data = array()) {
         $componentScopeName = $this->requires($componentPath);
-        $componentClass = "${componentScopeName[0]}_${componentScopeName[1]}";
+        $componentClass = "${componentScopeName[0]}_${componentScopeName[1]}${componentScopeName[2]}";
         
         if($componentScopeName) {
             $component = new $componentClass($componentScopeName[0], $componentScopeName[1], $data);
@@ -195,10 +195,11 @@ class BravoView_Component implements BravoView_Loader {
      * 加载并获取一个 Component。同 Component:requireComponent()。
      * 
      * @param  [string] $componentPath 目标 Component 路径
+     * @param  [string] $type
      * @return [string] 目标 Component 类名
      */
-    public final function requires($componentPath) {
-        return self::requireComponent($componentPath);
+    public function requires($componentPath, $type = 'components') {
+        return self::requireComponent($componentPath, $type);
     }
 
     /**
@@ -221,18 +222,32 @@ class BravoView_Component implements BravoView_Loader {
      * @param  [string] $component 目标 Component 路径
      * @return [array] 
      */
-    public static final function requireComponent($component) {
+    public static final function requireComponent($component, $type = 'components') {
         $componentScopeName = explode(':', $component);
 
         if(2 !== count($componentScopeName)) {
             return NULL;
         }
 
-        $componentPhpPath = BravoView_Env::getRootPath() . "/${componentScopeName[0]}/components/${componentScopeName[1]}/${componentScopeName[1]}.php";
+        $classNameSuffix = '';
+
+        switch($type) {
+            case 'components': break;
+            case 'pagelets':
+                $classNameSuffix = 'Pagelet';
+                break;
+            case 'actions':
+                $classNameSuffix = 'Action';
+                break;
+            default:;
+        }
+        $componentScopeName[] = $classNameSuffix;
+
+        $componentPhpPath = BravoView_Env::getRootPath() . "/${componentScopeName[0]}/$type/${componentScopeName[1]}/${componentScopeName[1]}.php";
 
         if(file_exists($componentPhpPath)){
             include_once($componentPhpPath);
-            $componentClass = "${componentScopeName[0]}_${componentScopeName[1]}";
+            $componentClass = "${componentScopeName[0]}_${componentScopeName[1]}${classNameSuffix}";
             return class_exists($componentClass, False) ? $componentScopeName : NULL;
         }else {
             return NULL;

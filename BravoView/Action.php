@@ -33,6 +33,10 @@ abstract class BravoView_Action extends BravoView_Component {
     public final function run() {
         return $this->display();
     }
+
+    public function requires($componentPath) {
+        return parent::requireComponent($componentPath, 'pagelets');
+    }
 }
 
 ?>

@@ -16,6 +16,7 @@
 require_once('BravoView/Env.php');
 require_once('BravoView/Action.php');
 require_once('BravoView/Component.php');
+require_once('BravoView/Pagelet.php');
 
 /**
  * BravoView代表一个 application,是框架的入口。

@@ -1,7 +1,7 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * BravoView.class.php
+  * BravoView.php
   *
   * changelog
   * 2015-10-15[15:13:06]:revised
@@ -13,9 +13,9 @@
 ?>
 <?php
 
-require_once('BravoView/Env.class.php');
-require_once('BravoView/Action.class.php');
-require_once('BravoView/Component.class.php');
+require_once('BravoView/Env.php');
+require_once('BravoView/Action.php');
+require_once('BravoView/Component.php');
 
 /**
  * BravoView代表一个 application,是框架的入口。
@@ -46,15 +46,15 @@ final class BravoView {
         
         switch ($engineName) {
             case 'twig':
-                include_once('BravoView/engines/TwigEngine.class.php');
+                include_once('BravoView/engines/TwigEngine.php');
                 $engine = new BravoView_TwigEngine(dirname(__FILE__) . '/cache');
                 break;
             case 'smarty':
-                include_once('BravoView/engines/SmartyEngine.class.php');
+                include_once('BravoView/engines/SmartyEngine.php');
                 $engine = new BravoView_SmartyEngine();
                 break;
             case 'test':
-                include_once('BravoView/engines/TestEngine.class.php');
+                include_once('BravoView/engines/TestEngine.php');
                 $engine = new BravoView_TestEngine();
                 break;
             default:

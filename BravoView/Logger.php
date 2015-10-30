@@ -1,7 +1,7 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * Logger.class.php
+  * Logger.php
   *
   * changelog
   * 2015-10-15[12:22:38]:revised

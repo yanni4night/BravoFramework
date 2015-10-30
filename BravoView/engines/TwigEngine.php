@@ -1,7 +1,7 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * TwigEngine.class.php
+  * TwigEngine.php
   *
   * changelog
   * 2015-10-15[13:54:03]:revised
@@ -13,7 +13,7 @@
 ?>
 <?php
 
-require_once('BravoView/TemplateEngine.class.php');
+require_once('BravoView/TemplateEngine.php');
 require_once('BravoView/thirty/twig/lib/Twig/Autoloader.php');
 
 Twig_Autoloader::register();

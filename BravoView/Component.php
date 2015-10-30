@@ -1,7 +1,7 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * Component.class.php
+  * Component.php
   *
   * changelog
   * 2015-10-15[15:42:58]:revised
@@ -13,9 +13,9 @@
 ?>
 <?php
 
-require_once('BravoView/Loader.class.php');
-require_once('BravoView/Env.class.php');
-require_once('BravoView/Logger.class.php');
+require_once('BravoView/Loader.php');
+require_once('BravoView/Env.php');
+require_once('BravoView/Logger.php');
 
 if(!defined('__DEP' . 'S__')) {
     define('__DEP' . 'S__', 1);

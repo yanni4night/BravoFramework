@@ -1,7 +1,7 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * SmartyEngine.class.php
+  * SmartyEngine.php
   *
   * changelog
   * 2015-10-15[13:56:24]:revised
@@ -13,7 +13,7 @@
 ?>
 <?php
 
-require_once('BravoView/TemplateEngine.class.php');
+require_once('BravoView/TemplateEngine.php');
 
 /**
  * Smarty模板引擎。

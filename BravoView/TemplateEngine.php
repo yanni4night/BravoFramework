@@ -1,7 +1,7 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * TemplateEngine.class.php
+  * TemplateEngine.php
   *
   * changelog
   * 2015-10-15[11:49:26]:revised
@@ -13,7 +13,7 @@
 ?>
 <?php
 
-require_once('BravoView/Renderer.class.php');
+require_once('BravoView/Renderer.php');
 
 /**
  * TemplateEngine 代表模板引擎。

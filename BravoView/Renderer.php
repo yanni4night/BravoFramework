@@ -1,7 +1,7 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * Renderer.class.php
+  * Renderer.php
   *
   * changelog
   * 2015-10-15[14:29:23]:revised

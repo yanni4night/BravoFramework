@@ -1,7 +1,7 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * Action.class.php
+  * Action.php
   *
   * changelog
   * 2015-10-15[15:15:05]:revised
@@ -13,7 +13,7 @@
 ?>
 <?php
 
-require_once('BravoView/Component.class.php');
+require_once('BravoView/Component.php');
 
 /**
  * Action 指一个页面的入口模块。

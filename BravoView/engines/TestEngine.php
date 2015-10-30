@@ -1,7 +1,7 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * TestEngine.class.php
+  * TestEngine.php
   *
   * changelog
   * 2015-10-15[16:21:03]:revised
@@ -13,7 +13,7 @@
 ?>
 <?php
 
-require_once('BravoView/TemplateEngine.class.php');
+require_once('BravoView/TemplateEngine.php');
 
 /**
  * 测试用模板引擎，仅支持一级"{{variable}}" 语法输出变量。

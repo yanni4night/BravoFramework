@@ -1,7 +1,7 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * Env.class.php
+  * Env.php
   *
   * changelog
   * 2015-10-15[15:48:52]:revised
@@ -13,7 +13,7 @@
 ?>
 <?php
 
-require_once('BravoView/Renderer.class.php');
+require_once('BravoView/Renderer.php');
 
 /**
  * Env 是一个环境单例类。

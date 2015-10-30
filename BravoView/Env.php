@@ -64,7 +64,7 @@ final class BravoView_Env {
      * 
      * @return [Renderer] 全局Renderer
      */
-    public static function getRenderer(){
+    public static function getRenderer() {
         return self::$renderer;
     }
 

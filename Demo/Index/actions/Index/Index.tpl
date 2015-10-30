@@ -20,7 +20,11 @@
   </div>
     {% autoescape false %}
     {{__self.load('Index:Top', {'user': user})}}
+    {{__self.load('Index:Content')}}
+    {{__self.load('Index:Bottom')}}
     {% endautoescape %}
+
+
     {% include __self.getAbsTplFilePath("footer.tpl") %}
   </body>
   <script type="text/javascript"></script>

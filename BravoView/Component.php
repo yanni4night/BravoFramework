@@ -14,6 +14,7 @@
 <?php
 
 require_once('BravoView/Loader.php');
+require_once('BravoView/ComponentDescriptor.php');
 require_once('BravoView/Env.php');
 require_once('BravoView/Logger.php');
 
@@ -36,31 +37,23 @@ class BravoView_Component implements BravoView_Loader {
     // 编译脚本应该将此编译为该Component依赖的所有依赖模块的数组
     private $dependencies = __DEPS__;
 
-    // 类型，用以路径查找
-    private $type = 'components';
-
-    // 空间
-    private $namespace = null;
-
-    // 名称
-    private $name = null;
-
     // 父加载器
     private $loader = null;
+
+    private $componentDescriptor;
 
     /**
      * 构造一个 Component。
      * 
      * @param [array] $data 初始数据
      */
-    public function __construct($namespace, $name, $data) {
-        $this->namespace = $namespace;
-        $this->name = $name;
+    public function __construct($namespace, $name, $data, $type = 'Component') {
         $this->initialData = isset($data) && is_array($data) && !empty($data) ? $data : array();
+        $this->componentDescriptor = new BravoView_ComponentDescriptor($namespace, $name, $type);
     }
 
     private function setLoader($loader) {
-        if($loader instanceof Loader) {
+        if($loader instanceof BravoView_Loader) {
             $this->loader = $loader;
         }
     }
@@ -85,7 +78,7 @@ class BravoView_Component implements BravoView_Loader {
      * @return [string] 模板文件名
      */
     protected function getTplFileName() {
-        $name = $this->getName();
+        $name = $this->componentDescriptor->getName();
         return "$name.tpl";
     }
 
@@ -123,36 +116,7 @@ class BravoView_Component implements BravoView_Loader {
      * @return [string] 绝对路径名
      */
     public final function getAbsTplFilePath($file = NULL) {
-        $name = $this->getName();
-        $namespace = $this->getNamespace();
-        return BravoView_Env::getRootPath() . "/$namespace/{$this->type}/$name/" . (isset($file) ? $file : $this->getTplFileName());
-    }
-
-    /**
-     * 设置类型。
-     * 
-     * @param [string] $type 类型
-     */
-    protected final function setType($type) {
-        $this->type = $type;
-    }
-
-    /**
-     * 获取该 Component 的名称。
-     * 
-     * @return [string] 名称
-     */
-    public final function getName() {
-        return $this->name;
-    }
-
-    /**
-     * 获取该 Component 的空间。
-     * 
-     * @return [string] 空间名
-     */
-    public final function getNamespace() {
-        return $this->namespace;
+        return $this->componentDescriptor->getComponentTplPath();
     }
 
     /**
@@ -163,8 +127,8 @@ class BravoView_Component implements BravoView_Loader {
      * @return [string] 路径名
      */
     public final function getPath() {
-        $name = $this->getName();
-        $namespace = $this->getNamespace();
+        $name = $this->componentDescriptor->getName();
+        $namespace = $this->componentDescriptor->getNamespace();
         return "$namespace:$name";
     }
 
@@ -178,14 +142,17 @@ class BravoView_Component implements BravoView_Loader {
      * @return [string] 目标 Component 的类名
      */
     public final function load($componentPath, $data = array()) {
-        $componentScopeName = $this->requires($componentPath);
-        $componentClass = "${componentScopeName[0]}_${componentScopeName[1]}${componentScopeName[2]}";
+        $componentDescriptor = self::resolveComponentDescriptor($componentPath, $this->getAllowedSubComponentType());
         
-        if($componentScopeName) {
-            $component = new $componentClass($componentScopeName[0], $componentScopeName[1], $data);
+        $componentClass = $componentDescriptor->getComponentClassName();
+
+        if($componentDescriptor->exists()) {
+            $component = new $componentClass($componentDescriptor->getNamespace(), $componentDescriptor->getName(), $data, $this->getAllowedSubComponentType());
             $component->setLoader($this);
             return $component->display();
         }else {
+            var_dump($componentDescriptor->getComponentClassName());
+            var_dump($componentDescriptor->getComponentClassPath());
             BravoView_Logger::warn("Component '$componentPath' not found!");
             return '';
         }
@@ -198,8 +165,13 @@ class BravoView_Component implements BravoView_Loader {
      * @param  [string] $type
      * @return [string] 目标 Component 类名
      */
-    public function requires($componentPath, $type = 'components') {
-        return self::requireComponent($componentPath, $type);
+    protected function getAllowedSubComponentType() {
+        return 'Component';
+    }
+
+    public final function requires($component) {
+        $componentDescriptor = self::resolveComponentDescriptor($component, $this->getAllowedSubComponentType());
+        return $componentDescriptor->exists() ? $componentDescriptor->getComponentClassName() : NULL;
     }
 
     /**
@@ -214,46 +186,18 @@ class BravoView_Component implements BravoView_Loader {
         return BravoView_Env::getRenderer()->render($this->getAbsTplFilePath(), $finalTplData);
     }
 
-    /**
-     * 加载并获取一个 Component 的类名。
-     *
-     * 如果目标 Component 不存在，则返回NULL。
-     * 
-     * @param  [string] $component 目标 Component 路径
-     * @return [array] 
-     */
-    public static final function requireComponent($component, $type = 'components') {
-        $componentScopeName = explode(':', $component);
+    private static final function resolveComponentDescriptor($component, $type) {
 
-        if(2 !== count($componentScopeName)) {
-            return NULL;
-        }
+        list($namespace, $name) = explode(':', $component);
 
-        $classNameSuffix = '';
-
-        switch($type) {
-            case 'components': break;
-            case 'pagelets':
-                $classNameSuffix = 'Pagelet';
-                break;
-            case 'actions':
-                $classNameSuffix = 'Action';
-                break;
-            default:;
-        }
-        $componentScopeName[] = $classNameSuffix;
-
-        $componentPhpPath = BravoView_Env::getRootPath() . "/${componentScopeName[0]}/$type/${componentScopeName[1]}/${componentScopeName[1]}.php";
-
-        if(file_exists($componentPhpPath)){
-            include_once($componentPhpPath);
-            $componentClass = "${componentScopeName[0]}_${componentScopeName[1]}${classNameSuffix}";
-            return class_exists($componentClass, False) ? $componentScopeName : NULL;
-        }else {
-            return NULL;
-        }
-        
+        return new BravoView_ComponentDescriptor($namespace, $name, $type);
     }
+
+    public static final function requireComponent($component) {
+        $componentDescriptor = self::resolveComponentDescriptor($component, 'Component');
+        return $componentDescriptor->exists();
+    }
+
 }
 
 ?>

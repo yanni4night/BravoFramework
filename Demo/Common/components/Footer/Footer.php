@@ -17,7 +17,13 @@ class Common_Footer extends BravoView_Component {
 
     protected function getTplData() {
         $utilsClass = $this->requires('Common:Utils');
-        $utils = new $utilsClass(null);
+        
+        if($utilsClass) {
+            $utils = new $utilsClass();
+        } else {
+            var_dump($utilsClass);
+        }
+
         return array('year' => $utils->now(), 'author' => 'yanni4night.com');
     }
 }

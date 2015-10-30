@@ -21,8 +21,7 @@ require_once('BravoView/Component.php');
 abstract class BravoView_Action extends BravoView_Component {
 
     public function __construct($scope, $name, $data) {
-        parent::__construct($scope, $name, $data);
-        $this->setType('actions');
+        parent::__construct($scope, $name, $data, 'Action');
     }
 
     /**
@@ -34,8 +33,8 @@ abstract class BravoView_Action extends BravoView_Component {
         return $this->display();
     }
 
-    public function requires($componentPath) {
-        return parent::requireComponent($componentPath, 'pagelets');
+    protected function getAllowedSubComponentType() {
+        return 'Pagelet';
     }
 }
 

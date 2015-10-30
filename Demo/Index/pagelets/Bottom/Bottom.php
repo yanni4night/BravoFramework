@@ -1,10 +1,10 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * Utils.php
+  * Bottom.php
   *
   * changelog
-  * 2015-10-16[15:17:23]:revised
+  * 2015-10-30[16:33:48]:revised
   *
   * @author yinyong02@baidu.com
   * @version 0.1.0
@@ -13,10 +13,7 @@
 ?>
 <?php
 
-class Common_Utils {
+class Index_BottomPagelet extends BravoView_Pagelet {
     
-    public function now() {
-        return date('Y-m-d H:i:s');
-    }
 }
 ?>

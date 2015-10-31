@@ -50,17 +50,26 @@ class BravoView_ComponentDescriptor {
     }
 
     public function getComponentTplPath() {
-        
-        $dir = strtolower($this->getType() . 's');
 
-        return BravoView_Env::getRootPath() . '/' . $this->getNamespace() . "/$dir/" . $this->getName() . '/' . $this->getName() . '.tpl';
+      return preg_replace('/\.php$/', '.tpl', $this->getComponentClassPath());
+        /*$dir = strtolower($this->getType() . 's');
+
+        return BravoView_Env::getRootPath() . '/' . $this->getNamespace() . "/$dir/" . $this->getName() . '/' . $this->getName() . '.tpl';*/
     }
 
     public function exists() {
         if(!$this->getNamespace() || !$this->getName()) {
             return False;
         }
-        include_once $this->getComponentClassPath();
+
+        $classPath = $this->getComponentClassPath();
+
+        if(file_exists($classPath)) {
+          include_once $classPath;
+        } else {
+          return False;
+        }
+
         return class_exists($this->getComponentClassName(), False);
     }
 

@@ -22,8 +22,8 @@ require_once('BravoView/Logger.php');
  */
 class BravoView_Pagelet extends BravoView_Component {
 
-    public function __construct($namespace, $name, $data) {
-        parent::__construct($namespace, $name, $data, 'Pagelet');
+    public function __construct($namespace, $name, $data, $loader) {
+        parent::__construct($namespace, $name, $data, $loader, 'Pagelet');
     }
     
     /*public function display() {

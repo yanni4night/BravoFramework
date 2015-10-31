@@ -20,8 +20,8 @@ require_once('BravoView/Component.php');
  */
 abstract class BravoView_Action extends BravoView_Component {
 
-    public function __construct($namespace, $name, $data) {
-        parent::__construct($namespace, $name, $data, 'Action');
+    public function __construct($namespace, $name, $data, $loader) {
+        parent::__construct($namespace, $name, $data, $loader, 'Action');
     }
 
     /**

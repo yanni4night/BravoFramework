@@ -15,6 +15,7 @@
 
 require_once('BravoView/Loader.php');
 require_once('BravoView/ComponentDescriptor.php');
+require_once('BravoView/LoaderStack.php');
 require_once('BravoView/Env.php');
 require_once('BravoView/Exception.php');
 require_once('BravoView/Logger.php');
@@ -43,14 +44,22 @@ class BravoView_Component implements BravoView_Loader {
 
     private $componentDescriptor;
 
+    private $loaderStack;
+
     /**
      * 构造一个 Component。
      * 
      * @param [array] $data 初始数据
      */
-    public function __construct($namespace, $name, $data, $type = 'Component') {
+    public function __construct($namespace, $name, $data, $loader, $type = 'Component') {
         $this->initialData = isset($data) && is_array($data) && !empty($data) ? $data : array();
         $this->componentDescriptor = new BravoView_ComponentDescriptor($namespace, $name, $type);
+        $this->setloader($loader);
+        if(isset($loader)) {
+            $this->loaderStack = $loader->getLoaderStack()->forward($this->componentDescriptor->getName());
+        } else {
+            $this->loaderStack = new BravoView_LoaderStack($this->componentDescriptor->getName());
+        }
     }
 
     private function setLoader($loader) {
@@ -68,6 +77,10 @@ class BravoView_Component implements BravoView_Loader {
      */
     public final function getLoader() {
         return $this->loader;
+    }
+
+    public final function getLoaderStack() {
+        return $this->loaderStack;
     }
 
     /**
@@ -152,8 +165,7 @@ class BravoView_Component implements BravoView_Loader {
         }
 
         if($componentDescriptor->exists()) {
-            $component = new $componentClass($componentDescriptor->getNamespace(), $componentDescriptor->getName(), $data, $this->getAllowedSubComponentType());
-            $component->setLoader($this);
+            $component = new $componentClass($componentDescriptor->getNamespace(), $componentDescriptor->getName(), $data,$this, $this->getAllowedSubComponentType());
             return $component->display();
         }else {
             BravoView_Logger::warn("Component '$componentPath' not found!");

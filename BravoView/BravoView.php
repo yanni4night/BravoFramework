@@ -85,7 +85,7 @@ final class BravoView {
             $actionClassPath = "${actionScope}_${actionName}Action";
 
             if(class_exists($actionClassPath, False)) {
-                $action = new $actionClassPath($actionScope, $actionName, $data);
+                $action = new $actionClassPath($actionScope, $actionName, $data, null);
                 echo $action->run();
             } else {
                 return $this->action($this->defaultAction, $data);

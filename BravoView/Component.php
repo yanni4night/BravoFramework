@@ -16,6 +16,7 @@
 require_once('BravoView/Loader.php');
 require_once('BravoView/ComponentDescriptor.php');
 require_once('BravoView/Env.php');
+require_once('BravoView/Exception.php');
 require_once('BravoView/Logger.php');
 
 if(!defined('__DEP' . 'S__')) {
@@ -146,13 +147,15 @@ class BravoView_Component implements BravoView_Loader {
         
         $componentClass = $componentDescriptor->getComponentClassName();
 
+        if($this->componentDescriptor->getName() === $componentClass) {
+            throw new BravoView_Exception("$componentClass cannot load self", 1);
+        }
+
         if($componentDescriptor->exists()) {
             $component = new $componentClass($componentDescriptor->getNamespace(), $componentDescriptor->getName(), $data, $this->getAllowedSubComponentType());
             $component->setLoader($this);
             return $component->display();
         }else {
-            var_dump($componentDescriptor->getComponentClassName());
-            var_dump($componentDescriptor->getComponentClassPath());
             BravoView_Logger::warn("Component '$componentPath' not found!");
             return '';
         }

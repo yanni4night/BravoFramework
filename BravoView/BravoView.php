@@ -79,7 +79,7 @@ final class BravoView extends BravoView_Component {
      * @throws [Bravo_Exception] Action 不存在
      */
     public function action($actionPath, $data = array()) {
-        $componentDescriptor = $this->resolveComponentDescriptor($actionPath, $this->getAllowedSubComponentType());
+        $componentDescriptor = $this->resolveComponentDescriptor($actionPath, $this->getSubComponentType());
         
         if($componentDescriptor->exists()) {
             echo $this->load($actionPath, $data);
@@ -101,7 +101,7 @@ final class BravoView extends BravoView_Component {
     /**
      * @override
      */
-    protected function getAllowedSubComponentType() {
+    protected function getSubComponentType() {
         return 'Action';
     }
 

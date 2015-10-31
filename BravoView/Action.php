@@ -33,7 +33,7 @@ abstract class BravoView_Action extends BravoView_Component {
         return $this->display();
     }
 
-    protected final function getAllowedSubComponentType() {
+    protected final function getSubComponentType() {
         return 'Pagelet';
     }
 }

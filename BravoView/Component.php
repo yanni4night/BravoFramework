@@ -125,7 +125,7 @@ class BravoView_Component extends BravoView_Loader {
      * @return [string] 目标 Component 的类名
      */
     public final function load($componentPath, $data = array()) {
-        $componentDescriptor = self::resolveComponentDescriptor($componentPath, $this->getAllowedSubComponentType());
+        $componentDescriptor = self::resolveComponentDescriptor($componentPath, $this->getSubComponentType());
         
         $componentClass = $componentDescriptor->getComponentClassName();
 
@@ -134,7 +134,7 @@ class BravoView_Component extends BravoView_Loader {
         }
 
         if($componentDescriptor->exists()) {
-            $subComponent = new $componentClass($componentDescriptor->getNamespace(), $componentDescriptor->getName(), $data, $this, $this->getAllowedSubComponentType());
+            $subComponent = new $componentClass($componentDescriptor->getNamespace(), $componentDescriptor->getName(), $data, $this, $this->getSubComponentType());
             return $subComponent->display();
         } else {
             BravoView_Logger::warn("Component '$componentPath' not found!");
@@ -149,7 +149,7 @@ class BravoView_Component extends BravoView_Loader {
      * @param  [string] $type
      * @return [string] 目标 Component 类名
      */
-    protected function getAllowedSubComponentType() {
+    protected function getSubComponentType() {
         return 'Component';
     }
 
@@ -160,7 +160,7 @@ class BravoView_Component extends BravoView_Loader {
      * @return [string]            Component 类名
      */
     public final function requires($componentPath) {
-        $componentDescriptor = self::resolveComponentDescriptor($componentPath, $this->getAllowedSubComponentType());
+        $componentDescriptor = self::resolveComponentDescriptor($componentPath, $this->getSubComponentType());
 
         return $componentDescriptor->exists() ? $componentDescriptor->getComponentClassName() : NULL;
     }

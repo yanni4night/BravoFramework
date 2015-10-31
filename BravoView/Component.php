@@ -181,7 +181,7 @@ class BravoView_Component extends BravoView_Loader {
 
         list($namespace, $name) = explode(':', $component);
 
-        return new BravoView_ComponentDescriptor($namespace, $name, $type);
+        return new BravoView_ComponentDescriptor(ucfirst($namespace), ucfirst($name), $type);
     }
 
     /**

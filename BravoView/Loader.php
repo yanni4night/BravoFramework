@@ -32,11 +32,6 @@ abstract class BravoView_Loader {
       } else {
             $this->loaderStack = new BravoView_LoaderStack($this->getUniquePath());
       }
-
-    }
-
-    private function setLoader($loader) {
-            $this->loader = $loader;
     }
 
     /**

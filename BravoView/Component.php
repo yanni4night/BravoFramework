@@ -15,7 +15,6 @@
 
 require_once('BravoView/Loader.php');
 require_once('BravoView/ComponentDescriptor.php');
-require_once('BravoView/LoaderStack.php');
 require_once('BravoView/Env.php');
 require_once('BravoView/Exception.php');
 require_once('BravoView/Logger.php');
@@ -31,20 +30,13 @@ if(!defined('__DEP' . 'S__')) {
  * 2. 调用其它 Component;
  * 
  */
-class BravoView_Component implements BravoView_Loader {
+class BravoView_Component extends BravoView_Loader {
 
     // 数据
-    private $initialData = array();
+    private $initialData;
 
-    // 编译脚本应该将此编译为该Component依赖的所有依赖模块的数组
-    private $dependencies = __DEPS__;
-
-    // 父加载器
-    private $loader = null;
-
+    // 描述符
     private $componentDescriptor;
-
-    private $loaderStack;
 
     /**
      * 构造一个 Component。
@@ -54,33 +46,7 @@ class BravoView_Component implements BravoView_Loader {
     public function __construct($namespace, $name, $data, $loader, $type = 'Component') {
         $this->initialData = isset($data) && is_array($data) && !empty($data) ? $data : array();
         $this->componentDescriptor = new BravoView_ComponentDescriptor($namespace, $name, $type);
-        $this->setloader($loader);
-        if(isset($loader)) {
-            $this->loaderStack = $loader->getLoaderStack()->forward($this->componentDescriptor->getName());
-        } else {
-            $this->loaderStack = new BravoView_LoaderStack($this->componentDescriptor->getName());
-        }
-    }
-
-    private function setLoader($loader) {
-        if($loader instanceof BravoView_Loader) {
-            $this->loader = $loader;
-        }
-    }
-
-    /**
-     * 获取本 Component 的父加载器。
-     *
-     * 只有使用 load 方法加载的Component才有父加载器。
-     * 
-     * @return [Loader] 父加载器
-     */
-    public final function getLoader() {
-        return $this->loader;
-    }
-
-    public final function getLoaderStack() {
-        return $this->loaderStack;
+        parent::__construct($loader);
     }
 
     /**
@@ -146,6 +112,13 @@ class BravoView_Component implements BravoView_Loader {
         return "$namespace:$name";
     }
 
+    protected function getUniquePath() {
+        $name = $this->componentDescriptor->getName();
+        $type = $this->componentDescriptor->getType();
+        $namespace = $this->componentDescriptor->getNamespace();
+        return strtolower("$namespace/$type/$name");
+    }
+
     /**
      * 加载一个 Component。
      *
@@ -165,8 +138,8 @@ class BravoView_Component implements BravoView_Loader {
         }
 
         if($componentDescriptor->exists()) {
-            $component = new $componentClass($componentDescriptor->getNamespace(), $componentDescriptor->getName(), $data,$this, $this->getAllowedSubComponentType());
-            return $component->display();
+            $subComponent = new $componentClass($componentDescriptor->getNamespace(), $componentDescriptor->getName(), $data, $this, $this->getAllowedSubComponentType());
+            return $subComponent->display();
         }else {
             BravoView_Logger::warn("Component '$componentPath' not found!");
             return '';

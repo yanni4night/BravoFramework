@@ -24,7 +24,7 @@ class BravoView_LoaderStack {
             if(is_string($initialStack) && trim($initialStack)) {
                 array_push($this->stack, $initialStack);
             } else if (is_array($initialStack) && !empty($initialStack)) {
-                array_merge($this->stack, array_filter($initialStack, function($val) {
+                $this->stack = array_merge($this->stack, array_filter($initialStack, function($var) {
                     return is_string($var) && trim($var);
                 }));
             }
@@ -32,16 +32,14 @@ class BravoView_LoaderStack {
     }
 
     public final function forward($loader) {
-      $loaderStack = new self($this->stack);
+      $loaderStack = new BravoView_LoaderStack($this->stack);
       $loaderStack->push($loader);
       return $loaderStack;
     }
 
     private function push($loader) {
         if (in_array($loader, $this->stack)) {
-          throw new BravoView_Exception("Circle loaders:$this", 1);
-          
-            return False;
+            throw new BravoView_Exception("Circle loaders:$this", 1);
         } else {
             array_push($this->stack, $loader);
             return True;

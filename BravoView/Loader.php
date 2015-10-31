@@ -13,7 +13,7 @@
 ?>
 <?php
 
-require_once('BravoView/LoaderStack.php');
+require_once 'BravoView/LoaderStack.php';
 
 /**
  * Loader 代表资源 "加载器"。

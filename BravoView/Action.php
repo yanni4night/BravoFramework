@@ -13,7 +13,7 @@
 ?>
 <?php
 
-require_once('BravoView/Component.php');
+require_once 'BravoView/Component.php';
 
 /**
  * Action 指一个页面的入口模块。

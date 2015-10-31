@@ -13,12 +13,13 @@
 ?>
 <?php
 
-require_once('BravoView/Renderer.php');
+require_once 'BravoView/Renderer.php';
 
 /**
  * TemplateEngine 代表模板引擎。
  */
 interface BravoView_TemplateEngine extends BravoView_Renderer {
+
 }
 
 ?>

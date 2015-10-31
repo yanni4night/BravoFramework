@@ -13,11 +13,11 @@
 ?>
 <?php
 
-require_once('BravoView/Loader.php');
-require_once('BravoView/ComponentDescriptor.php');
-require_once('BravoView/Env.php');
-require_once('BravoView/Exception.php');
-require_once('BravoView/Logger.php');
+require_once 'BravoView/Loader.php';
+require_once 'BravoView/ComponentDescriptor.php';
+require_once 'BravoView/Env.php';
+require_once 'BravoView/Exception.php';
+require_once 'BravoView/Logger.php';
 
 /**
  * Component 代表模块化的实体。它拥有以下功能：

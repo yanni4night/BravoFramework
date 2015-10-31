@@ -13,7 +13,7 @@
 ?>
 <?php
 
-require_once('BravoView/TemplateEngine.php');
+require_once 'BravoView/TemplateEngine.php';
 
 /**
  * 测试用模板引擎，仅支持一级"{{variable}}" 语法输出变量。

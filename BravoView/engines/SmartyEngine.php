@@ -13,7 +13,7 @@
 ?>
 <?php
 
-require_once('BravoView/TemplateEngine.php');
+require_once 'BravoView/TemplateEngine.php';
 
 /**
  * Smarty模板引擎。

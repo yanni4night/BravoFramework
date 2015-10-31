@@ -13,8 +13,8 @@
 ?>
 <?php
 
-require_once('BravoView/TemplateEngine.php');
-require_once('BravoView/thirty/twig/lib/Twig/Autoloader.php');
+require_once 'BravoView/TemplateEngine.php';
+require_once 'BravoView/thirty/twig/lib/Twig/Autoloader.php';
 
 Twig_Autoloader::register();
 

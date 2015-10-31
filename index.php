@@ -20,6 +20,6 @@ date_default_timezone_set('Asia/Shanghai');
 require_once('BravoView/BravoView.php');
 
 // Entry of business
-require('Demo/index.php');
+require('Release/index.php');
 
 ?>

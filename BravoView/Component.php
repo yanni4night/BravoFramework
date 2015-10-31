@@ -19,10 +19,6 @@ require_once('BravoView/Env.php');
 require_once('BravoView/Exception.php');
 require_once('BravoView/Logger.php');
 
-if(!defined('__DEP' . 'S__')) {
-    define('__DEP' . 'S__', 1);
-}
-
 /**
  * Component 代表模块化的实体。它拥有以下功能：
  * 
@@ -140,7 +136,7 @@ class BravoView_Component extends BravoView_Loader {
         if($componentDescriptor->exists()) {
             $subComponent = new $componentClass($componentDescriptor->getNamespace(), $componentDescriptor->getName(), $data, $this, $this->getAllowedSubComponentType());
             return $subComponent->display();
-        }else {
+        } else {
             BravoView_Logger::warn("Component '$componentPath' not found!");
             return '';
         }

@@ -29,8 +29,8 @@ final class BravoView {
     /**
      * 初始化 Bravo application。
      * 
-     * @param [type] $rootPath      [description]
-     * @param string $tplEngineName [description]
+     * @param [type] $rootPath
+     * @param string $tplEngineName
      */
     public function __construct($rootPath, $tplEngineName = 'test') {
         BravoView_Env::setRootPathOnce($rootPath);
@@ -88,10 +88,10 @@ final class BravoView {
                 $action = new $actionClassPath($actionScope, $actionName, $data, null);
                 echo $action->run();
             } else {
-                return $this->action($this->defaultAction, $data);
+                $this->action($this->defaultAction, $data);
             }
-        }else {
-            return $this->action($this->defaultAction, $data);
+        } else {
+                $this->action($this->defaultAction, $data);
         }
     }
 

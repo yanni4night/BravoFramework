@@ -13,25 +13,25 @@
 ?>
 <?php
 
-require_once('BravoView/Env.php');
-require_once('BravoView/Action.php');
-require_once('BravoView/Component.php');
-require_once('BravoView/Pagelet.php');
-require_once('BravoView/Exception.php');
+require_once 'BravoView/Env.php';
+require_once 'BravoView/Action.php';
+require_once 'BravoView/Component.php';
+require_once 'BravoView/Pagelet.php';
+require_once 'BravoView/Exception.php';
 
 /**
- * BravoView代表一个 application,是框架的入口。
+ * BravoView 代表一个 application，是框架的入口。
  */
 final class BravoView extends BravoView_Component {
 
-    // 默认 acion
+    // 默认 Action
     private $defaultAction = 'Index:Index';
 
     /**
      * 初始化 Bravo application。
      * 
-     * @param [type] $rootPath
-     * @param string $tplEngineName
+     * @param [string] $rootPath App 根路径
+     * @param string $tplEngineName 模板引擎类型
      */
     public function __construct($rootPath, $tplEngineName = 'test') {
         parent::__construct('BravoView', 'BravoView', NULL, NULL, 'BravoView');
@@ -49,15 +49,15 @@ final class BravoView extends BravoView_Component {
         
         switch ($engineName) {
             case 'twig':
-                include_once('BravoView/engines/TwigEngine.php');
+                include_once 'BravoView/engines/TwigEngine.php';
                 $engine = new BravoView_TwigEngine(dirname(__FILE__) . '/cache');
                 break;
             case 'smarty':
-                include_once('BravoView/engines/SmartyEngine.php');
+                include_once 'BravoView/engines/SmartyEngine.php';
                 $engine = new BravoView_SmartyEngine();
                 break;
             case 'test':
-                include_once('BravoView/engines/TestEngine.php');
+                include_once 'BravoView/engines/TestEngine.php';
                 $engine = new BravoView_TestEngine();
                 break;
             default:
@@ -106,9 +106,9 @@ final class BravoView extends BravoView_Component {
     }
 
     /**
-     * 设置默认的action。
+     * 设置默认的 Action。
      * 
-     * @param [string] $defaultAction 默认 action 的路径
+     * @param [string] $defaultAction 默认 Action 的路径
      */
     public function setDefaultAction($defaultAction){
       $this->defaultAction = $defaultAction;

@@ -200,8 +200,14 @@ class BravoView_Component implements BravoView_Loader {
         return new BravoView_ComponentDescriptor($namespace, $name, $type);
     }
 
-    public static final function requireComponent($component) {
-        $componentDescriptor = self::resolveComponentDescriptor($component, 'Component');
+    /**
+     * 引入一个 Component。
+     * 
+     * @param  [string] $componentPath Component 路径
+     * @return [bool]            是否引入成功
+     */
+    public static final function requireComponent($componentPath) {
+        $componentDescriptor = self::resolveComponentDescriptor($componentPath, 'Component');
         return $componentDescriptor->exists();
     }
 

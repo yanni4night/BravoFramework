@@ -92,7 +92,7 @@ class BravoView_Component extends BravoView_Loader {
      * @return [string] 绝对路径名
      */
     public final function getAbsTplFilePath($file = NULL) {
-        return $this->componentDescriptor->getComponentTplPath();
+        return $this->componentDescriptor->getComponentTplPath($file);
     }
 
     /**

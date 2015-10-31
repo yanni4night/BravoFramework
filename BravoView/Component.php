@@ -169,8 +169,15 @@ class BravoView_Component implements BravoView_Loader {
         return 'Component';
     }
 
-    public final function requires($component) {
-        $componentDescriptor = self::resolveComponentDescriptor($component, $this->getAllowedSubComponentType());
+    /**
+     * 获取一个 Component 的类名。
+     * 
+     * @param  [string] $componentPath Component 路径
+     * @return [string]            Component 类名
+     */
+    public final function requires($componentPath) {
+        $componentDescriptor = self::resolveComponentDescriptor($componentPath, $this->getAllowedSubComponentType());
+
         return $componentDescriptor->exists() ? $componentDescriptor->getComponentClassName() : NULL;
     }
 

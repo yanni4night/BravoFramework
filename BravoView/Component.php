@@ -177,18 +177,34 @@ class BravoView_Component extends BravoView_Loader {
         return BravoView_Env::getRenderer()->render($this->getAbsTplFilePath(), $finalTplData);
     }
 
-    protected static final function resolveComponentDescriptor($component, $type) {
+    /**
+     * @override
+     */
+    public function __toString() {
+        return $this->display();
+    }
 
-        list($namespace, $name) = explode(':', $component);
+    /**
+     * 根据 Component 路径名解析出 ComponentDescriptor。
+     * 
+     * @param  [string] $componentPath Component 路径
+     * @param  [string] $type      Component 类型
+     * @return [ComponentDescriptor]            Component 描述
+     */
+    protected static final function resolveComponentDescriptor($componentPath, $type) {
+
+        list($namespace, $name) = explode(':', $componentPath);
 
         return new BravoView_ComponentDescriptor(ucfirst($namespace), ucfirst($name), $type);
     }
 
     /**
-     * 引入一个 Component。
+     * 导入一个 Component。
+     *
+     * 导入成功后，可直接使用 Component 类。
      * 
      * @param  [string] $componentPath Component 路径
-     * @return [bool]            是否引入成功
+     * @return [bool]            是否导入成功
      */
     public static final function requireComponent($componentPath) {
         $componentDescriptor = self::resolveComponentDescriptor($componentPath, 'Component');

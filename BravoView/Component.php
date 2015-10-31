@@ -177,7 +177,7 @@ class BravoView_Component extends BravoView_Loader {
         return BravoView_Env::getRenderer()->render($this->getAbsTplFilePath(), $finalTplData);
     }
 
-    private static final function resolveComponentDescriptor($component, $type) {
+    protected static final function resolveComponentDescriptor($component, $type) {
 
         list($namespace, $name) = explode(':', $component);
 

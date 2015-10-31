@@ -27,6 +27,7 @@ abstract class BravoView_Loader {
 
     public function __construct($loader = NULL) {
       if(isset($loader) && is_object($loader) && $loader instanceof BravoView_Loader) {
+            $this->loader = $loader;
             $this->loaderStack = $loader->getLoaderStack()->forward($this->getUniquePath());
       } else {
             $this->loaderStack = new BravoView_LoaderStack($this->getUniquePath());

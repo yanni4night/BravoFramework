@@ -8,4 +8,6 @@
 
     BravoView->Action->Pagelet->Component
 
-接口函数统一为`load`，因此暂不支持`Pagelet`嵌套。
+接口函数统一为`load`。
+
+`Pagelet` 允许嵌套 `Pagelet`。

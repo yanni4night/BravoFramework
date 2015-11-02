@@ -22,8 +22,14 @@ require_once 'BravoView/Logger.php';
  */
 class BravoView_Pagelet extends BravoView_Component {
 
+    private $subTypes = array('Component', 'Pagelet');
+
     public function __construct($namespace, $name, $data, $loader) {
         parent::__construct($namespace, $name, $data, $loader, 'Pagelet');
+    }
+
+    protected function getSubComponentType() {
+        return $this->subTypes;
     }
 }
 

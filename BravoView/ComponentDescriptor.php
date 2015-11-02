@@ -30,8 +30,8 @@ class BravoView_ComponentDescriptor {
      * @param [string] $type      类型
      */
     public function __construct($namespace, $name, $type) {
-        $this->namespace = $namespace;
-        $this->name = $name;
+        $this->namespace = ucfirst($namespace);
+        $this->name = ucfirst($name);
         $this->type = ucfirst($type);
     }
 

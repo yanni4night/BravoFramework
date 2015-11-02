@@ -125,7 +125,7 @@ class BravoView_Component extends BravoView_Loader {
      * @return [string] 目标 Component 的类名
      */
     public final function load($componentPath, $data = array()) {
-        $componentDescriptor = self::resolveComponentDescriptor($componentPath, $this->getSubComponentType());
+        $componentDescriptor = $this->resolveComponentDescriptor($componentPath);
         
         $componentClass = $componentDescriptor->getComponentClassName();
 
@@ -134,7 +134,7 @@ class BravoView_Component extends BravoView_Loader {
         }
 
         if($componentDescriptor->exists()) {
-            $subComponent = new $componentClass($componentDescriptor->getNamespace(), $componentDescriptor->getName(), $data, $this, $this->getSubComponentType());
+            $subComponent = new $componentClass($componentDescriptor->getNamespace(), $componentDescriptor->getName(), $data, $this, $componentDescriptor->getType());
             return $subComponent->display();
         } else {
             BravoView_Logger::warn("Component '$componentPath' not found!");
@@ -160,7 +160,7 @@ class BravoView_Component extends BravoView_Loader {
      * @return [string]            Component 类名
      */
     public final function requires($componentPath) {
-        $componentDescriptor = self::resolveComponentDescriptor($componentPath, $this->getSubComponentType());
+        $componentDescriptor = $this->resolveComponentDescriptor($componentPath);
 
         return $componentDescriptor->exists() ? $componentDescriptor->getComponentClassName() : NULL;
     }
@@ -188,16 +188,31 @@ class BravoView_Component extends BravoView_Loader {
      * 根据 Component 路径名解析出 ComponentDescriptor。
      * 
      * @param  [string] $componentPath Component 路径
-     * @param  [string] $type      Component 类型
      * @return [ComponentDescriptor]            Component 描述
      */
-    protected static final function resolveComponentDescriptor($componentPath, $type) {
-
-        list($namespace, $name) = explode(':', $componentPath);
-
-        return new BravoView_ComponentDescriptor(ucfirst($namespace), ucfirst($name), $type);
+    protected final function resolveComponentDescriptor($componentPath) {
+        return self::resolveComponentDescriptorBySubTypes($componentPath, $this->getSubComponentType());
     }
 
+    private static function resolveComponentDescriptorBySubTypes($componentPath, $subTypes) {
+        list($namespace, $type, $name) = explode(':', $componentPath);
+            
+        if(!$subTypes || (is_array($subTypes) && !count($subTypes))) {
+            throw new BravoView_Exception('No type is allowed.', 1);
+        }
+
+        if(isset($name) && $name) {
+            $type = ucfirst($type);
+            if((is_array($subTypes) && !in_array($type, $subTypes)) || (!is_array($subTypes) && $type !== $subTypes)) {
+                throw new BravoView_Exception("'$type' is not allowed for " . (is_array($subTypes) ? join(',', $subTypes) : $subTypes), 1);
+            }
+        } else {
+            $name = $type;
+            $type = is_array($subTypes) ? $subTypes[0] : $subTypes;
+        }
+
+        return new BravoView_ComponentDescriptor($namespace, $name, $type);
+    }
     /**
      * 导入一个 Component。
      *
@@ -207,7 +222,7 @@ class BravoView_Component extends BravoView_Loader {
      * @return [bool]            是否导入成功
      */
     public static final function requireComponent($componentPath) {
-        $componentDescriptor = self::resolveComponentDescriptor($componentPath, 'Component');
+        $componentDescriptor = self::resolveComponentDescriptorBySubTypes($componentPath, 'Component');
         return $componentDescriptor->exists();
     }
 

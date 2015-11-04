@@ -1,6 +1,7 @@
 modules=`ls Demo`
 here=`pwd`
-rm -rf Release/*
+rm -rf Release
+mkdir Release
 for m in $modules
 do
     if [ -d "Demo/$m" ];then

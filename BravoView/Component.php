@@ -135,7 +135,7 @@ class BravoView_Component extends BravoView_Loader {
 
         if($componentDescriptor->exists()) {
             $subComponent = new $componentClass($componentDescriptor->getNamespace(), $componentDescriptor->getName(), $data, $this, $componentDescriptor->getType());
-            return $subComponent->display();
+            return $subComponent->formatDisplay();
         } else {
             BravoView_Logger::warn("Component '$componentPath' not found!");
             return '';
@@ -151,6 +151,15 @@ class BravoView_Component extends BravoView_Loader {
      */
     protected function getSubComponentType() {
         return 'Component';
+    }
+
+    /**
+     * 对Component输出内容格式化。
+     * 
+     * @return [string] 格式后的内容。
+     */
+    protected function formatDisplay() {
+        return $this->display();
     }
 
     /**
@@ -181,7 +190,7 @@ class BravoView_Component extends BravoView_Loader {
      * @override
      */
     public function __toString() {
-        return $this->display();
+        return $this->formatDisplay();
     }
 
     /**

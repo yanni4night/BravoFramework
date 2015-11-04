@@ -28,9 +28,9 @@ abstract class BravoView_Loader {
     public function __construct($loader = NULL) {
       if(isset($loader) && is_object($loader) && $loader instanceof BravoView_Loader) {
             $this->loader = $loader;
-            $this->loaderStack = $loader->getLoaderStack()->forward($this->getUniquePath());
+            $this->loaderStack = $loader->getLoaderStack()->forward($this->getUniqueId());
       } else {
-            $this->loaderStack = new BravoView_LoaderStack($this->getUniquePath());
+            $this->loaderStack = new BravoView_LoaderStack($this->getUniqueId());
       }
     }
 
@@ -63,7 +63,7 @@ abstract class BravoView_Loader {
      * 
      * @return [string] 唯一串
      */
-    protected abstract function getUniquePath();
+    protected abstract function getUniqueId();
 }
 
 ?>

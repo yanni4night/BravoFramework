@@ -108,7 +108,7 @@ class BravoView_Component extends BravoView_Loader {
         return "$namespace:$name";
     }
 
-    protected function getUniquePath() {
+    protected function getUniqueId() {
         $name = $this->componentDescriptor->getName();
         $type = $this->componentDescriptor->getType();
         $namespace = $this->componentDescriptor->getNamespace();

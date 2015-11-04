@@ -104,8 +104,9 @@ class BravoView_Component extends BravoView_Loader {
      */
     public final function getPath() {
         $name = $this->componentDescriptor->getName();
+        $type = $this->componentDescriptor->getType();
         $namespace = $this->componentDescriptor->getNamespace();
-        return "$namespace:$name";
+        return "$namespace:$type:$name";
     }
 
     protected function getUniqueId() {
@@ -118,7 +119,7 @@ class BravoView_Component extends BravoView_Loader {
     /**
      * 加载一个 Component。
      *
-     * 如果目标 Component 不存在，则反馈空字符串。
+     * 如果目标 Component 不存在，则返回空字符串。
      * 
      * @param  [string] $componentPath 目标 Component 路径
      * @param  [array] $data 目标 Component 初始数据

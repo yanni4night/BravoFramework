@@ -13,12 +13,12 @@
 ?>
 <?php
 
-require_once 'BravoView/Component.php';
+require_once 'BravoView/Module.php';
 
 /**
  * Action 指一个页面的入口模块。
  */
-abstract class BravoView_Action extends BravoView_Component {
+abstract class BravoView_Action extends BravoView_Module{
 
     public function __construct($namespace, $name, $data, $loader) {
         parent::__construct($namespace, $name, $data, $loader, 'Action');
@@ -33,7 +33,7 @@ abstract class BravoView_Action extends BravoView_Component {
         return $this->display();
     }
 
-    protected final function getSubComponentType() {
+    protected final function getSubModuleType() {
         return 'Pagelet';
     }
 }

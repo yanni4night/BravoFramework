@@ -1,7 +1,7 @@
 <?php
 /**
   * Copyright (C) 2015 tieba.baidu.com
-  * ComponentDescriptor.php
+  * ModuleDescriptor.php
   *
   * changelog
   * 2015-10-30[17:11:01]:revised
@@ -16,15 +16,15 @@
 require_once('BravoView/Env.php');
 
 /**
- * Component 描述，包含命名空间、名称和类型信息。
+ * Module 描述，包含命名空间、名称和类型信息。
  */
-class BravoView_ComponentDescriptor {
+class BravoView_ModuleDescriptor {
     private $namespace;
     private $name;
     private $type;
 
     /**
-     * 构造一个 Component 描述。
+     * 构造一个 Module 描述。
      * @param [string] $namespace 命名空间
      * @param [string] $name      名称
      * @param [string] $type      类型
@@ -33,6 +33,10 @@ class BravoView_ComponentDescriptor {
         $this->namespace = ucfirst($namespace);
         $this->name = ucfirst($name);
         $this->type = ucfirst($type);
+    }
+
+    public function getFullPath() {
+        return join(':', array($this->namespace, $this->type, $this->name));
     }
 
     /**
@@ -63,20 +67,20 @@ class BravoView_ComponentDescriptor {
     }
 
     /**
-     * 获取所描述的 Component 的类名。
+     * 获取所描述的 Module 的类名。
      * 
      * @return [string] 类名
      */
-    public function getComponentClassName() {
+    public function getModuleClassName() {
         return $this->getNamespace() . '_' . $this->getName() . ('Component' === $this->getType() ? '' : $this->getType());
     }
 
     /**
-     * 获取所描述的 Component 的类文件路径。
+     * 获取所描述的 Module 的类文件路径。
      * 
      * @return [string] 类文件路径
      */
-    public function getComponentClassPath() {
+    public function getModuleClassPath() {
 
         $dir = strtolower($this->getType() . 's');
 
@@ -84,14 +88,14 @@ class BravoView_ComponentDescriptor {
     }
 
     /**
-     * 获取所描述的 Component 的模板文件路径。
+     * 获取所描述的 Module 的模板文件路径。
      *
-     * 如无文件名指定，则默认采用与 Component 同名的 tpl 文件。
+     * 如无文件名指定，则默认采用与 Module 同名的 tpl 文件。
      * 
      * @param  [string] $file 模版名
      * @return [string]       模板文件路径
      */
-    public function getComponentTplPath($file = NULL) {
+    public function getModuleTplPath($file = NULL) {
 
       if(isset($file) && is_string($file) && !empty($file)) {
           $dir = strtolower($this->getType() . 's');
@@ -99,13 +103,13 @@ class BravoView_ComponentDescriptor {
           return BravoView_Env::getRootPath() . '/' . $this->getNamespace() . "/$dir/" . $this->getName() . '/' . $file;
       }
 
-      return preg_replace('/\.php$/', '.tpl', $this->getComponentClassPath());
+      return preg_replace('/\.php$/', '.tpl', $this->getModuleClassPath());
     }
 
     /**
-     * 检查所描述的 Component 是否存在。
+     * 检查所描述的 Module 是否存在。
      *
-     * 该操作会将 Component 类文件引入。
+     * 该操作会将 Module 类文件引入。
      * 
      * @return [bool] 是否存在
      */
@@ -114,7 +118,7 @@ class BravoView_ComponentDescriptor {
             return False;
         }
 
-        $classPath = $this->getComponentClassPath();
+        $classPath = $this->getModuleClassPath();
 
         if(file_exists($classPath)) {
             include_once $classPath;
@@ -122,7 +126,7 @@ class BravoView_ComponentDescriptor {
             return False;
         }
 
-        return class_exists($this->getComponentClassName(), False);
+        return class_exists($this->getModuleClassName(), False);
     }
 
 }

@@ -15,6 +15,7 @@
 
 require_once 'BravoView/Env.php';
 require_once 'BravoView/Action.php';
+require_once 'BravoView/Module.php';
 require_once 'BravoView/Component.php';
 require_once 'BravoView/Pagelet.php';
 require_once 'BravoView/Exception.php';
@@ -22,7 +23,7 @@ require_once 'BravoView/Exception.php';
 /**
  * BravoView 代表一个 application，是框架的入口。
  */
-final class BravoView extends BravoView_Component {
+final class BravoView extends BravoView_Module {
 
     // 默认 Action
     private $defaultAction = 'Index:Index';
@@ -79,17 +80,17 @@ final class BravoView extends BravoView_Component {
      * @throws [Bravo_Exception] Action 不存在
      */
     public function action($actionPath, $data = array()) {
-        $componentDescriptor = $this->resolveComponentDescriptor($actionPath, $this->getSubComponentType());
+        $moduleDescriptor = $this->resolveModuleDescriptor($actionPath);
         
-        if($componentDescriptor->exists()) {
+        if($moduleDescriptor->exists()) {
             echo $this->load($actionPath, $data);
             return;
         }
 
         // Lookup default action
-        $componentDescriptor = $this->resolveComponentDescriptor($this->defaultAction);
+        $moduleDescriptor = $this->resolveModuleDescriptor($this->defaultAction);
 
-        if($componentDescriptor->exists()) {
+        if($moduleDescriptor->exists()) {
             echo $this->load($this->defaultAction, $data);
             return;
         }
@@ -101,7 +102,7 @@ final class BravoView extends BravoView_Component {
     /**
      * @override
      */
-    protected function getSubComponentType() {
+    protected final function getSubModuleType() {
         return 'Action';
     }
 

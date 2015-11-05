@@ -13,14 +13,14 @@
 ?>
 <?php
 
-require_once 'BravoView/Component.php';
+require_once 'BravoView/Module.php';
 require_once 'BravoView/Env.php';
 require_once 'BravoView/Logger.php';
 
 /**
  * BigPipe 概念
  */
-class BravoView_Pagelet extends BravoView_Component {
+class BravoView_Pagelet extends BravoView_Module {
 
     private $subTypes = array('Component', 'Pagelet');
 
@@ -28,7 +28,7 @@ class BravoView_Pagelet extends BravoView_Component {
         parent::__construct($namespace, $name, $data, $loader, 'Pagelet');
     }
 
-    protected function getSubComponentType() {
+    protected final function getSubModuleType() {
         return $this->subTypes;
     }
 }

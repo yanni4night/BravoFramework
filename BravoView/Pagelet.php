@@ -31,6 +31,21 @@ class BravoView_Pagelet extends BravoView_Module {
     protected final function getSubModuleType() {
         return $this->subTypes;
     }
+
+    public final function triggerRender() {
+        $content = $this->display();
+        return '<script>TBP(' . json_encode(array(
+            'id' => $this->getUniqueId(),
+            'js' => array(),
+            'css' => array(),
+            'content' => $content
+            )) . ');</script>';
+    }
+
+    protected final function formatDisplay() {
+        // 先占位，过后输出 script 再行渲染
+        return '<div id="' . $this->getUniqueId() . '"></div>';
+    }
 }
 
 ?>

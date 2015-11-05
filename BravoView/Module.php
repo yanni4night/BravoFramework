@@ -86,6 +86,17 @@ abstract class BravoView_Module extends BravoView_Loader {
     }
 
     /**
+     * 追加数据
+     * 
+     * @param  [array] $data 额外数据
+     */
+    protected function pushData($data) {
+        if(is_array($data)) {
+            $this->initialData = array_merge($this->initialData, $data);
+        }
+    }
+
+    /**
      * 获取渲染模板的数据。
      *
      * 默认使用初始数据，覆写该方法以使用其它数据。

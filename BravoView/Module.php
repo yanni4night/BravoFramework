@@ -90,7 +90,7 @@ abstract class BravoView_Module extends BravoView_Loader {
      * 
      * @param  [array] $data 额外数据
      */
-    protected function pushData($data) {
+    public function pushData($data) {
         if(is_array($data)) {
             $this->initialData = array_merge($this->initialData, $data);
         }
@@ -147,7 +147,7 @@ abstract class BravoView_Module extends BravoView_Loader {
         return "$namespace:$type:$name";
     }
 
-    protected function getUniqueId() {
+    public function getUniqueId() {
         $name = $this->getName();
         $type = $this->getType();
         $namespace = $this->getNamespace();

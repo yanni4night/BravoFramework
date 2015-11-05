@@ -15,6 +15,7 @@
 
 require_once 'BravoView/Module.php';
 require_once 'BravoView/Env.php';
+require_once 'BravoView/PageletHub.php';
 require_once 'BravoView/Logger.php';
 
 /**
@@ -26,6 +27,7 @@ class BravoView_Pagelet extends BravoView_Module {
 
     public function __construct($namespace, $name, $data, $loader) {
         parent::__construct($namespace, $name, $data, $loader, 'Pagelet');
+        BravoView_PageletHub::appendPagelet($this);
     }
 
     protected final function getSubModuleType() {
@@ -34,17 +36,23 @@ class BravoView_Pagelet extends BravoView_Module {
 
     public final function triggerRender() {
         $content = $this->display();
-        return '<script>TBP(' . json_encode(array(
+        echo '<script>TBP(' . json_encode(array(
             'id' => $this->getUniqueId(),
             'js' => array(),
             'css' => array(),
             'content' => $content
-            )) . ');</script>';
+            )) . ');</script>'; 
+        ob_flush();
+        flush();
     }
 
     protected final function formatDisplay() {
         // 先占位，过后输出 script 再行渲染
         return '<div id="' . $this->getUniqueId() . '"></div>';
+    }
+
+    public function getDataProviders() {
+        return array();
     }
 }
 

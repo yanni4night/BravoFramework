@@ -24,13 +24,10 @@ abstract class BravoView_Action extends BravoView_Module{
         parent::__construct($namespace, $name, $data, $loader, 'Action');
     }
 
-    /**
-     * 输出页面所有HTML。
-     * 
-     * @return [string] 页面HTML
-     */
-    public final function run() {
-        return $this->display();
+    public final function formatDisplay() {
+        $content = $this->display();
+        BravoView_PageletHub::notifyPageComplete();
+        return $content;
     }
 
     protected final function getSubModuleType() {

@@ -22,6 +22,7 @@ final class BravoView_Env {
     
     private static $rootPath;
     private static $renderer;
+    private static $dataProviderHandler;
 
     private function __construct(){}
     /**
@@ -66,6 +67,14 @@ final class BravoView_Env {
      */
     public static function getRenderer() {
         return self::$renderer;
+    }
+
+    public static function setDataProviderHandler($dataProviderHandler) {
+        self::$dataProviderHandler = $dataProviderHandler;
+    }
+
+    public static function getDataProviderHandler() {
+        return self::$dataProviderHandler;
     }
 
 }

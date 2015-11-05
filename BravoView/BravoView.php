@@ -18,6 +18,8 @@ require_once 'BravoView/Action.php';
 require_once 'BravoView/Module.php';
 require_once 'BravoView/Component.php';
 require_once 'BravoView/Pagelet.php';
+require_once 'BravoView/PageletHub.php';
+require_once 'BravoView/DataProviderHandler.php';
 require_once 'BravoView/Exception.php';
 
 /**
@@ -34,10 +36,11 @@ final class BravoView extends BravoView_Module {
      * @param [string] $rootPath App 根路径
      * @param string $tplEngineName 模板引擎类型
      */
-    public function __construct($rootPath, $tplEngineName = 'test') {
+    public function __construct($rootPath, $dataProviderHandler, $tplEngineName = 'test') {
         parent::__construct('BravoView', 'BravoView', NULL, NULL, 'BravoView');
         BravoView_Env::setRootPathOnce($rootPath);
         BravoView_Env::setRendererOnce($this->resolveTemplateEngine($tplEngineName));
+        BravoView_Env::setDataProviderHandler($dataProviderHandler);
     }
 
     /**
@@ -79,11 +82,13 @@ final class BravoView extends BravoView_Module {
      * @return [string] 页面HTML
      * @throws [Bravo_Exception] Action 不存在
      */
-    public function action($actionPath, $data = array()) {
+    public function action($actionPath) {
         $moduleDescriptor = $this->resolveModuleDescriptor($actionPath);
         
         if($moduleDescriptor->exists()) {
             echo $this->load($actionPath, $data);
+            ob_flush();
+            flush();
             return;
         }
 
@@ -91,7 +96,9 @@ final class BravoView extends BravoView_Module {
         $moduleDescriptor = $this->resolveModuleDescriptor($this->defaultAction);
 
         if($moduleDescriptor->exists()) {
-            echo $this->load($this->defaultAction, $data);
+            echo $this->load($this->defaultAction);
+            ob_flush();
+            flush();
             return;
         }
 
@@ -113,6 +120,10 @@ final class BravoView extends BravoView_Module {
      */
     public function setDefaultAction($defaultAction){
       $this->defaultAction = $defaultAction;
+    }
+
+    public final function notifyDataProviderComplete($dpName, $data) {
+        BravoView_Pagelethub::notifyDataProviderComplete($dpName, $data);
     }
 }
 

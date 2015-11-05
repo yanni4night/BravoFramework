@@ -18,6 +18,10 @@ class Index_ContentPagelet extends BravoView_Pagelet {
     public function display() {
         return $this->load('Index:China');
     }
+
+    public function getDataProviders() {
+        return array('C', 'D','E','F');
+    }
 }
 
 ?>

@@ -46,6 +46,33 @@ abstract class BravoView_Module extends BravoView_Loader {
     }
 
     /**
+     * 返回该 Module 的名字空间。
+     * 
+     * @return [string] 名字空间
+     */
+    public function getNamespace() {
+        return $this->moduleDescriptor->getNamespace();
+    }
+
+    /**
+     * 返回该 Module 的名字。
+     * 
+     * @return [string] 名字
+     */
+    public function getName() {
+        return $this->moduleDescriptor->getName();
+    }
+
+    /**
+     * 返回该 Module 的类型。
+     * 
+     * @return [string] 类型
+     */
+    public function getType() {
+        return $this->moduleDescriptor->getType();
+    }
+
+    /**
      * 获取模版名，仅支持一个文件。
      *
      * 默认查找与该 Module 同名的文件，后缀"tpl"，
@@ -54,7 +81,7 @@ abstract class BravoView_Module extends BravoView_Loader {
      * @return [string] 模板文件名
      */
     protected function getTplFileName() {
-        $name = $this->moduleDescriptor->getName();
+        $name = $this->getName();
         return "$name.tpl";
     }
 
@@ -103,16 +130,16 @@ abstract class BravoView_Module extends BravoView_Loader {
      * @return [string] 路径名
      */
     public final function getPath() {
-        $name = $this->moduleDescriptor->getName();
-        $type = $this->moduleDescriptor->getType();
-        $namespace = $this->moduleDescriptor->getNamespace();
+        $name = $this->getName();
+        $type = $this->getType();
+        $namespace = $this->getNamespace();
         return "$namespace:$type:$name";
     }
 
     protected function getUniqueId() {
-        $name = $this->moduleDescriptor->getName();
-        $type = $this->moduleDescriptor->getType();
-        $namespace = $this->moduleDescriptor->getNamespace();
+        $name = $this->getName();
+        $type = $this->getType();
+        $namespace = $this->getNamespace();
         return strtolower("$namespace-$type-$name");
     }
 
@@ -130,7 +157,7 @@ abstract class BravoView_Module extends BravoView_Loader {
         
         $moduleClass = $moduleDescriptor->getModuleClassName();
 
-        if($this->moduleDescriptor->getName() === $moduleClass) {
+        if($this->getName() === $moduleClass) {
             throw new BravoView_Exception("$moduleClass cannot load self", 1);
         }
 

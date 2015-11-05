@@ -1,5 +1,10 @@
 # BravoFramework
-Just a thinking of front-end framework including module/build/php
+Just a thinking of front-end framework.It contanins:
+
+ - View: PHP layer implements module/static
+ - Build: Build script
+ - bigpipe.js: Script implements bigpipe mode
+ - Tcm: Component Manager Tool
 
 # Development
 
@@ -13,6 +18,11 @@ $ git subtree add --prefix Tcm Tcm master
 $ git subtree add --prefix bigpipe.js bigpipe.js master
 ```
 
+# test
+run script:
+    sh build.sh
+
+open browser: <http://localhost/BravoFramework/index.php>
 
 # Contact
 

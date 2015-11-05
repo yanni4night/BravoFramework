@@ -81,10 +81,23 @@ class BravoView_ModuleDescriptor {
      * @return [string] 类文件路径
      */
     public function getModuleClassPath() {
+        return $this->resolveLocalFilePath($this->getName() . '.php');
+    }
 
+    /**
+     * 解析该 Module 目录下一个文件的绝对路径。
+     * 
+     * @param  [string] $file 文件名
+     * @return [string]       绝对路径
+     */
+    public function resolveLocalFilePath($file) {
         $dir = strtolower($this->getType() . 's');
 
-        return BravoView_Env::getRootPath() . '/' . $this->getNamespace() . "/$dir/" . $this->getName() . '/' . $this->getName() . '.php';
+        if(0 === strpos($file, '/')) {
+            $file = substr($file, 1);
+        }
+
+        return BravoView_Env::getRootPath() . '/' . $this->getNamespace() . "/$dir/" . $this->getName() . "/$file";
     }
 
     /**
@@ -97,13 +110,11 @@ class BravoView_ModuleDescriptor {
      */
     public function getModuleTplPath($file = NULL) {
 
-      if(isset($file) && is_string($file) && !empty($file)) {
-          $dir = strtolower($this->getType() . 's');
-
-          return BravoView_Env::getRootPath() . '/' . $this->getNamespace() . "/$dir/" . $this->getName() . '/' . $file;
+      if(!isset($file) || !is_string($file) || empty($file)) {
+          $file = $this->getName() . '.tpl';
       }
 
-      return preg_replace('/\.php$/', '.tpl', $this->getModuleClassPath());
+      return $this->resolveLocalFilePath($file);
     }
 
     /**

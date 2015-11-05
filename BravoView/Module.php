@@ -113,7 +113,7 @@ abstract class BravoView_Module extends BravoView_Loader {
         $name = $this->moduleDescriptor->getName();
         $type = $this->moduleDescriptor->getType();
         $namespace = $this->moduleDescriptor->getNamespace();
-        return strtolower("$namespace/$type/$name");
+        return strtolower("$namespace-$type-$name");
     }
 
     /**

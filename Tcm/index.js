@@ -4,6 +4,7 @@
  *
  * changelog
  * 2015-10-21[00:22:06]:revised
+ * 2015-11-06[16:40:24]:whole component name;yaml format instead of json
  *
  * @author yanni4night@gmail.com
  * @version 0.1.0
@@ -13,8 +14,9 @@ var read = require('read');
 var PZ = require('promzard').PromZard
 var path = require('path');
 var async = require('async');
+var jsYaml = require('js-yaml');
 
-var params = 'name,namespace,author'.split(',');
+var params = 'name,type,namespace,author'.split(',');
 
 async.parallel(params.map(function (key) {
     return require('./lib/' + key + '.js');
@@ -38,7 +40,7 @@ function ask(ctx) {
 
     pz.on('data', function (data) {
         read({
-            prompt: JSON.stringify(data, null, 4) + '\n\nIs this ok?',
+            prompt: jsYaml.safeDump(data) + '\n\nIs this ok?',
             default: 'yes'
         }, function (err, ret) {
             if (!ret || ret.toLowerCase().charAt(0) === 'y') {
@@ -56,5 +58,5 @@ function ask(ctx) {
 }
 
 function write(config) {
-    require('fs').writeFileSync('component.json', JSON.stringify(config, null, 4));
+    require('fs').writeFileSync('module.yml', jsYaml.safeDump(config));
 }

@@ -11,7 +11,7 @@
  */
 
 module.exports = {
-    path: prompt('path', namespace + ':' + name),
+    path: prompt('path', namespace + ':' + type + ':' + name),
     author: prompt('author', author),
     description: prompt('description'),
     dependencies: prompt('dependencies', function (data) {
@@ -19,7 +19,12 @@ module.exports = {
         if (data) {
             var keys = data.split(',');
             keys.forEach(function (key) {
-                deps[key] = '~1.0.0';
+                if (2 === key.split(':').length) {
+                    key = key.replace(/:/, ':Component:');
+                }
+                if (3 === key.split(':').length) {
+                    deps[key] = '~1.0.0';
+                }
             });
         }
         return deps;

@@ -23,8 +23,9 @@
   },
   "homepage": "https://github.com/yanni4night/tcm",
   "dependencies": {
-    "read": "~1.0.7",
+    "async": "~1.4.2",
+    "js-yaml": "^3.4.3",
     "promzard": "~0.3.0",
-    "async": "~1.4.2"
+    "read": "~1.0.7"
   }
 }

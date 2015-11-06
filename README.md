@@ -1,12 +1,15 @@
 # BravoFramework
-Just a thinking of front-end framework.It contanins:
 
- - View: PHP layer implements module/static
- - Build: Build script
- - bigpipe.js: Script implements bigpipe mode
- - Tcm: Component Manager Tool
+一种基于 PHP 的前端工程框架，包含：
+
+ - View: PHP 框架
+ - Build: 构建脚本
+ - bigpipe.js: BigPipe 前端基础库
+ - Tcm: 脚手架
 
 # Development
+
+使用 `git subtree` 维护了几个子 repo。
 
 ```
 $ git clone -b master https://github.com/yanni4night/BravoFramework.git
@@ -19,15 +22,19 @@ $ git subtree add --prefix bigpipe.js bigpipe.js master
 ```
 
 # Test
-run script:
+
+依赖：
+ - Grunt
+
+运行脚本：
     sh build.sh
 
-open browser: <http://localhost/BravoFramework/index.php>
+<http://localhost/BravoFramework/index.php>
 
 # Roadmap
 
-[ROADMAP](READMAP.md)
+[ROADMAP](ROADMAP.md)
 
-# Contact
+# 联系
 
  - <yanni4night@gmail.com>

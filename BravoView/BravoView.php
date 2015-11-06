@@ -123,7 +123,7 @@ final class BravoView extends BravoView_Module {
     }
 
     public final function notifyDataProviderComplete($dpName, $data) {
-        BravoView_Pagelethub::notifyDataProviderComplete($dpName, $data);
+        BravoView_Pagelethub::getInstance()->notifyDataProviderComplete($dpName, $data);
     }
 }
 

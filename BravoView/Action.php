@@ -26,7 +26,7 @@ abstract class BravoView_Action extends BravoView_Module{
 
     public final function formatDisplay() {
         $content = $this->display();
-        BravoView_PageletHub::notifyPageComplete();
+        BravoView_PageletHub::getInstance()->notifyPageComplete();
         return $content;
     }
 

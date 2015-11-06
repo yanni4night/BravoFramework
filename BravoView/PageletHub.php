@@ -30,7 +30,7 @@ final class BravoView_PageletHub {
      *
      * @var array
      */
-    private static $dataProviders = array();
+    private $dataProviders = array();
 
     /**
      * 用于计算每个pagelet的依赖的dp数量。
@@ -39,50 +39,58 @@ final class BravoView_PageletHub {
      * 
      * @var array
      */
-    private static $pagelets = array();
+    private $pagelets = array();
 
-    public static function appendPagelet($pagelet) {
-        if($pagelet && $pagelet instanceof BravoView_Pagelet && !in_array($pagelet, self::$pagelets)) {
+    private function __construct() {}
+
+    private static $instance;
+
+    public static final function getInstance() {
+        return self::$instance ? self::$instance :(self::$instance = new self());
+    }
+
+    public function appendPagelet($pagelet) {
+        if($pagelet && $pagelet instanceof BravoView_Pagelet && !in_array($pagelet, $this->pagelets)) {
             
             $dataProviders = array_unique($pagelet->getDataProviders());
 
             foreach ($dataProviders as $dpName) {
-                if(!isset(self::$dataProviders)) {
-                    self::$dataProviders[$dpName] = array($pagelet);
+                if(!isset($this->dataProviders)) {
+                    $this->dataProviders[$dpName] = array($pagelet);
                 } else {
-                    self::$dataProviders[$dpName][] = $pagelet;
+                    $this->dataProviders[$dpName][] = $pagelet;
                 }
                 
                 $pageletId = $pagelet->getUniqueId();
 
-                if(!isset(self::$pagelets[$pageletId])) {
-                    self::$pagelets[$pageletId] = 0;
+                if(!isset($this->pagelets[$pageletId])) {
+                    $this->pagelets[$pageletId] = 0;
                 }
 
-                ++self::$pagelets[$pageletId];
+                ++$this->pagelets[$pageletId];
             }
         }
     }
 
-    public static function notifyPageComplete() {
-        BravoView_Env::getDataProviderHandler()->pushDataProviders(array_keys(self::$dataProviders));
+    public function notifyPageComplete() {
+        BravoView_Env::getDataProviderHandler()->pushDataProviders(array_keys($this->dataProviders));
     }
     /**
      * 通知有一个DataProvider已经运行完成。
      * 
      * @param  [string] $dpName DataProvider 名字
      */
-    public static function notifyDataProviderComplete($dpName, $data) {
-        if(!isset(self::$dataProviders[$dpName])) {
+    public function notifyDataProviderComplete($dpName, $data) {
+        if(!isset($this->dataProviders[$dpName])) {
             return;
         }
 
-        $pagelets = self::$dataProviders[$dpName];
+        $pagelets = $this->dataProviders[$dpName];
 
         foreach ($pagelets as $idx => $pagelet) {
-           if(isset(self::$pagelets[$pagelet->getUniqueId()])) {
+           if(isset($this->pagelets[$pagelet->getUniqueId()])) {
                 $pagelet->pushData($data);
-                if(--self::$pagelets[$pagelet->getUniqueId()] === 0) {
+                if(--$this->pagelets[$pagelet->getUniqueId()] === 0) {
                     $pagelet->triggerRender();
                     unset($pagelets[$idx]);
                 }

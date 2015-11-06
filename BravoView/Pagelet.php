@@ -27,7 +27,7 @@ class BravoView_Pagelet extends BravoView_Module {
 
     public function __construct($namespace, $name, $data, $loader) {
         parent::__construct($namespace, $name, $data, $loader, 'Pagelet');
-        BravoView_PageletHub::appendPagelet($this);
+        BravoView_PageletHub::getInstance()->appendPagelet($this);
     }
 
     protected final function getSubModuleType() {

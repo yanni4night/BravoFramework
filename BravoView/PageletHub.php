@@ -15,8 +15,9 @@
 
 include_once 'BravoView/Env.php';
 include_once 'BravoView/Pagelet.php';
+include_once 'BravoView/DataProviderKnocker.php';
 
-final class BravoView_PageletHub {
+final class BravoView_PageletHub implements BravoView_DataProviderKnocker{
     /**
      * 树形挂载，用于检查哪些pagelet的数据准备好了
      *

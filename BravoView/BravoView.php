@@ -20,12 +20,13 @@ require_once 'BravoView/Component.php';
 require_once 'BravoView/Pagelet.php';
 require_once 'BravoView/PageletHub.php';
 require_once 'BravoView/DataProviderHandler.php';
+require_once 'BravoView/DataProviderKnocker.php';
 require_once 'BravoView/Exception.php';
 
 /**
  * BravoView 代表一个 application，是框架的入口。
  */
-final class BravoView extends BravoView_Module {
+final class BravoView extends BravoView_Module implements BravoView_DataProviderKnocker{
 
     // 默认 Action
     private $defaultAction = 'Index:Index';

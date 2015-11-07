@@ -51,8 +51,14 @@ class BravoView_Pagelet extends BravoView_Module {
         return '<div id="' . $this->getUniqueId() . '"></div>';
     }
 
-    public function getDataProviders() {
-        return array();
+    /**
+     * 从配置中获取依赖的 Data Providers。
+     * 
+     * @return [array] 所有 Data Provider 数组
+     */
+    public final function getDataProviders() {
+        $providers = $this->getConfig('data-providers');
+        return is_array($providers) ? $providers : array();
     }
 }
 

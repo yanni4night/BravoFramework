@@ -4,5 +4,4 @@ author: yinyong
 description: ''
 dependencies: {}
 data-providers:
-  - Footer
   - Common

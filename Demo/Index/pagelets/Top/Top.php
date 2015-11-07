@@ -19,9 +19,6 @@ class Index_TopPagelet extends BravoView_Pagelet {
         return $this->load('Index:Hello');
     }
 
-    public function getDataProviders() {
-        return array('A', 'B', 'C', 'D');
-    }
 }
 
 ?>

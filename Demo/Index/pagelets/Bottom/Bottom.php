@@ -15,8 +15,5 @@
 
 class Index_BottomPagelet extends BravoView_Pagelet {
     
-    public function getDataProviders() {
-        return array('C', 'D', 'E', 'F', 'G');
-    }
 }
 ?>

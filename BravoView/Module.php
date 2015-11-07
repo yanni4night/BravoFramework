@@ -155,6 +155,34 @@ abstract class BravoView_Module extends BravoView_Loader {
     }
 
     /**
+     * 获取 Module 描述符。
+     * 
+     * @return [ModuleDescriptor] 当前 Module 描述符
+     */
+    protected final function getModuleDescriptor() {
+        return $this->moduleDescriptor;
+    }
+
+    /**
+     * 读取模块配置。
+     *
+     * 当配置不存在时，返回NULL。
+     *
+     * 当传参非字符串时，返回全部配置
+     * 
+     * @param  [string] $key 配置项
+     * @return [array]      配置
+     */
+    protected final function getConfig($key = NULL) {
+        $config = $this->moduleDescriptor->readModuleConfig();
+        if(isset($key) && $key && is_string($key)) {
+            return isset($config[$key]) ? $config[$key] : NULL;
+        } else {
+            return $config;
+        }
+    }
+
+    /**
      * 加载一个 Module。
      *
      * 如果目标 Module 不存在，则返回空字符串。

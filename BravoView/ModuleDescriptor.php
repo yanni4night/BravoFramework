@@ -14,6 +14,8 @@
 <?php
 
 require_once('BravoView/Env.php');
+require_once('BravoView/Exception.php');
+require_once('BravoView/Logger.php');
 
 /**
  * Module 描述，包含命名空间、名称和类型信息。
@@ -98,6 +100,28 @@ class BravoView_ModuleDescriptor {
         }
 
         return BravoView_Env::getRootPath() . '/' . $this->getNamespace() . "/$dir/" . $this->getName() . "/$file";
+    }
+
+    /**
+     * 读取模块配置文件。
+     * 
+     * @return [array] 模块配置
+     */
+    public function readModuleConfig() {
+        $configFile = $this->resolveLocalFilePath('module.config.php');
+        
+        try {
+            // TODO: deep clone
+            $config = include $configFile;
+            if(!is_array($config)) {
+                throw new BravoView_Exception('"$configFile" not avaliable', 1);
+            }
+        } catch(Exception $e) {
+            BravoView_Logger::warn($e->getMessage());
+            $config = array();
+        }
+
+        return $config;;
     }
 
     /**

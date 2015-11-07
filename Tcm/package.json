@@ -1,31 +1,33 @@
 {
-  "name": "tcm",
-  "version": "0.1.0",
-  "description": "Tieba component manager",
-  "bin": "bin/tcm",
-  "main": "index.js",
-  "scripts": {
-    "test": "grunt"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yanni4night/tcm.git"
-  },
-  "keywords": [
-    "tieba",
-    "component",
-    "manager"
-  ],
-  "author": "yanni4night@gmail.com",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/yanni4night/tcm/issues"
-  },
-  "homepage": "https://github.com/yanni4night/tcm",
-  "dependencies": {
-    "async": "~1.4.2",
-    "js-yaml": "^3.4.3",
-    "promzard": "~0.3.0",
-    "read": "~1.0.7"
-  }
+    "name": "tcm",
+    "version": "0.1.0",
+    "description": "Tieba component manager",
+    "bin": {
+        "tcm": "bin/tcm"
+    },
+    "main": "index.js",
+    "scripts": {
+        "test": "grunt"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yanni4night/tcm.git"
+    },
+    "keywords": [
+        "tieba",
+        "component",
+        "manager"
+    ],
+    "author": "yanni4night@gmail.com",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/yanni4night/tcm/issues"
+    },
+    "homepage": "https://github.com/yanni4night/tcm",
+    "dependencies": {
+        "async": "~1.4.2",
+        "js-yaml": "^3.4.3",
+        "promzard": "~0.3.0",
+        "read": "~1.0.7"
+    }
 }

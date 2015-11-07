@@ -9,59 +9,116 @@
  * @version 0.1.0
  * @since 0.1.0
  */
-module.exports = function(grunt) {
-  require('load-grunt-tasks')(grunt);
-  require('time-grunt')(grunt);
-  
-  grunt.file.setBase('..');
+var whoami = require('whoami-exec');
 
-  var deploy = grunt.file.readYAML('deploy.yml');
+module.exports = function (grunt) {
+    require('load-grunt-tasks')(grunt);
+    require('time-grunt')(grunt);
 
-  var outputDir = 'output/' + deploy.name;
+    var pkg = grunt.file.readJSON('package.json');
 
-  grunt.initConfig({
-    clean: {
-      output: ['output']
-    },
-    copy: {
-      php: {
-        expand: true,
-        cwd: '.',
-        src: ['{actions,components,pagelets}/**/*.php'],
-        dest: outputDir
-      },
-      tpl: {
-        expand: true,
-        cwd: '.',
-        src: ['{actions,components,pagelets}/**/*.tpl'],
-        dest: outputDir
-      }
-    },
-    dependencies: {
-      dep: {
-        expand: true,
-        cwd: '.',
-        src: '{actions,components,pagelets}/**/*/component.json',
-        dest: outputDir,
-        ext: '.config.php'
-      }
-    }
-  });
+    grunt.file.setBase('..');
 
-  grunt.task.registerMultiTask('dependencies', 'dep json to php', function() {
-    var options = this.options({});
+    var deploy = grunt.file.readYAML('deploy.yml');
 
-    this.files.forEach(function(f) {
-      var src = f.src[0];
-      var json = grunt.file.readJSON(src);
-      var components = Object.keys(json.dependencies || {});
-      var deps = components.map(function(item) {
-        return "'" + item + "' => '" + json.dependencies[item] + "'";
-      });
-      var content = '<?php return array(' + deps + '); ?>';
-      grunt.file.write(f.dest, content);
+    var outputDir = 'output/' + deploy.name;
+
+    var myName = whoami();
+
+    grunt.initConfig({
+        pkg: pkg,
+        clean: {
+            output: ['output']
+        },
+        copy: {
+            php: {
+                expand: true,
+                cwd: '.',
+                src: ['*/*/*.php'],
+                dest: outputDir
+            },
+            tpl: {
+                expand: true,
+                cwd: '.',
+                src: ['*/*/*.tpl'],
+                dest: outputDir
+            }
+        },
+        config: {
+            dep: {
+                expand: true,
+                cwd: '.',
+                src: '*/*/module.yml',
+                dest: outputDir,
+                ext: '.config.php'
+            }
+        }
     });
-  });
 
-  grunt.registerTask('default', ['clean', 'copy', 'dependencies']);
+    grunt.task.registerMultiTask('config', 'yml to php', function () {
+        var options = this.options({});
+
+        function repeat(str, n) {
+            var ret = str;
+            for (var i = 0; i < n - 1; ++i) {
+                ret += str;
+            }
+            return ret;
+        }
+
+        function js2php(obj, indent) {
+            indent = +indent || 4;
+            if (indent < 0) {
+                indent = 0;
+            }
+            var indentSpace = repeat(' ', indent);
+            var nextIndext = indent + 4;
+            if (null == obj) {
+                return 'NULL';
+            } else if (true === obj) {
+                return 'True';
+            } else if (false === obj) {
+                return 'False';
+            } else if ('number' === typeof obj || obj.constructor === Number) {
+                return Number(obj);
+            } else if (obj.constructor === Date) {
+                return +obj / 1e3 | 0;
+            } else if (obj.constructor === RegExp) {
+                return obj.toString();
+            } else if (obj.constructor === String) {
+                return '\'' + obj + '\'';
+            } else if (Array.isArray(obj)) {
+                var ret = [];
+                for (var i = 0; i < obj.length; ++i) {
+                    if (js2php(obj[i])) {
+                        ret.push(js2php(obj[i], nextIndext));
+                    }
+                }
+                return 'array(\n' + indentSpace + ret.join(',\n' + indentSpace) + '\n' + ')';
+            } else if ('function' === typeof obj) {
+                return '';
+            } else {
+                ret = [];
+                for (var e in obj) {
+                    if (js2php(obj[e])) {
+                        ret.push('\'' + e + '\' => ' + js2php(obj[e], nextIndext));
+                    }
+                }
+
+                return 'array(\n' + indentSpace + ret.join(',\n' + indentSpace) + '\n' + ')';
+            }
+        }
+
+        this.files.forEach(function (f) {
+            var src = f.src[0];
+            var yaml = grunt.file.readYAML(src);
+            var content = '<?php\n/**\n * GENERATED AUTOMATICALLY BY ' + pkg.name + ' v' + pkg.version +
+                '\n *\n * DO NOT MODIFY IT!\n *\n * @author ' + myName + '\n * @file\n */ \nreturn ' +
+                js2php(
+                    yaml) + ';\n ?>';
+            grunt.file.write(f.dest, content);
+        });
+    });
+
+    grunt.registerTask('default', ['clean', 'copy', 'config']);
 };

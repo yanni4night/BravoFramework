@@ -53,7 +53,7 @@ final class BravoView_PageletHub implements BravoView_DataProviderKnocker{
      * 
      * @var array
      */
-    private $pagelets = array();
+    private $dataProviderCountInPagelet = array();
 
     private function __construct() {}
 
@@ -64,8 +64,9 @@ final class BravoView_PageletHub implements BravoView_DataProviderKnocker{
     }
 
     public function appendPagelet($pagelet) {
-        if($pagelet && $pagelet instanceof BravoView_Pagelet && !in_array($pagelet, $this->pagelets)) {
+        if($pagelet && $pagelet instanceof BravoView_Pagelet && !in_array($pagelet, $this->dataProviderCountInPagelet)) {
             
+            // 每个 Pagelet 的 data provider 一定要去重
             $requiredDataProviders = array_unique($pagelet->getDataProviders());
 
             foreach ($requiredDataProviders as $dpName) {
@@ -80,11 +81,11 @@ final class BravoView_PageletHub implements BravoView_DataProviderKnocker{
                 
                 $pageletId = $pagelet->getUniqueId();
 
-                if(!isset($this->pagelets[$pageletId])) {
-                    $this->pagelets[$pageletId] = 0;
+                if(!isset($this->dataProviderCountInPagelet[$pageletId])) {
+                    $this->dataProviderCountInPagelet[$pageletId] = 0;
                 }
 
-                ++$this->pagelets[$pageletId];
+                ++$this->dataProviderCountInPagelet[$pageletId];
             }
         }
     }
@@ -106,9 +107,9 @@ final class BravoView_PageletHub implements BravoView_DataProviderKnocker{
         $dp = $this->dataProviders[$dpName];
 
         foreach ($dp['pagelets'] as $idx => $pagelet) {
-           if(isset($this->pagelets[$pagelet->getUniqueId()])) {
+           if(isset($this->dataProviderCountInPagelet[$pagelet->getUniqueId()])) {
                 $pagelet->pushData($data);
-                if(--$this->pagelets[$pagelet->getUniqueId()] === 0) {
+                if(--$this->dataProviderCountInPagelet[$pagelet->getUniqueId()] === 0) {
                     $pagelet->triggerRender();
                     unset($dp[$idx]);
                 }

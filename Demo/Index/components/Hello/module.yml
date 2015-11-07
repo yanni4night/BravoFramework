@@ -1,0 +1,6 @@
+path: 'Index:Component:Hello'
+version: 1.0.0
+author: yinyong
+description: ''
+dependencies:
+  'Index:Component:World': ~1.0.0

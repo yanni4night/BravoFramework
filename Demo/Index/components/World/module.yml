@@ -1,0 +1,6 @@
+path: 'Index:Component:World'
+version: 1.0.0
+author: yinyong
+description: ''
+dependencies:
+  'Common:Component:Block': ~1.0.0

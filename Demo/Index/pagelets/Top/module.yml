@@ -1,0 +1,10 @@
+path: 'Index:Pagelet:Top'
+version: 1.0.0
+author: yinyong
+description: ''
+dependencies:
+  'Index:Component:Hello': ~1.0.0
+data-providers:
+  - Common
+  - User
+  - Store

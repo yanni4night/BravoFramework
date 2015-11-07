@@ -1,0 +1,9 @@
+path: 'Index:Pagelet:Content'
+version: 1.0.0
+author: yinyong
+description: ''
+dependencies:
+  'Index:Component:China': ~1.0.0
+data-providers:
+  - Common
+  - File

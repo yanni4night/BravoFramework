@@ -1,0 +1,8 @@
+path: 'Index:Pagelet:Bottom'
+version: 1.0.0
+author: yinyong
+description: ''
+dependencies: {}
+data-providers:
+  - Footer
+  - Common

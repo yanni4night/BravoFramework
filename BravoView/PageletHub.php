@@ -17,26 +17,39 @@ include_once 'BravoView/Env.php';
 include_once 'BravoView/Pagelet.php';
 include_once 'BravoView/DataProviderKnocker.php';
 
+/**
+ * 集中处理 Bigpipe 中 Pagelet 的数据请求。
+ *
+ * 首先应将每个 Pagelet 通过 notifyPageComplete 方法
+ * 通知 PageletHub，当页面中所有 Pagelet 收集完毕，调用
+ * notifyPageComplete 触发数据请求。
+ *
+ * 当外部数据准备完成时，PageletHub 会调用满足的 Pagelet
+ * 并渲染。
+ * 
+ */
 final class BravoView_PageletHub implements BravoView_DataProviderKnocker{
     /**
      * 树形挂载，用于检查哪些pagelet的数据准备好了
      *
-     *  - dp1 - pagelet1
-     *        - pagelet2
-     *        - pagelet3
-     *  - dp2 - pagelet2
-     *        - pagelet3
-     *        - pagelet4
-     *  ...
+     *  array(
+     *      'dp1' => array(
+     *          'pagelets' => array(),
+     *          'data' => array()
+     *      )
+     *  )
      *
      * @var array
      */
     private $dataProviders = array();
 
     /**
-     * 用于计算每个pagelet的依赖的dp数量。
+     * 用于计算每个 pagelet 的依赖的 data provider 数量。
      *
-     * pagelet1=>5,pagelet2=>3...
+     * array(
+     *     'pagelet1' => 5,
+     *     'pagelet2' => 3
+     * )
      * 
      * @var array
      */
@@ -53,13 +66,16 @@ final class BravoView_PageletHub implements BravoView_DataProviderKnocker{
     public function appendPagelet($pagelet) {
         if($pagelet && $pagelet instanceof BravoView_Pagelet && !in_array($pagelet, $this->pagelets)) {
             
-            $dataProviders = array_unique($pagelet->getDataProviders());
+            $requiredDataProviders = array_unique($pagelet->getDataProviders());
 
-            foreach ($dataProviders as $dpName) {
-                if(!isset($this->dataProviders)) {
-                    $this->dataProviders[$dpName] = array($pagelet);
+            foreach ($requiredDataProviders as $dpName) {
+                if(!isset($this->dataProviders[$dpName])) {
+                    $this->dataProviders[$dpName] = array(
+                            'pagelets' => array($pagelet),
+                            'data' => NULL
+                        );
                 } else {
-                    $this->dataProviders[$dpName][] = $pagelet;
+                    $this->dataProviders[$dpName]['pagelets'][] = $pagelet;
                 }
                 
                 $pageletId = $pagelet->getUniqueId();
@@ -80,20 +96,21 @@ final class BravoView_PageletHub implements BravoView_DataProviderKnocker{
      * 通知有一个DataProvider已经运行完成。
      * 
      * @param  [string] $dpName DataProvider 名字
+     * @param  [array] $data 
      */
     public function notifyDataProviderComplete($dpName, $data) {
         if(!isset($this->dataProviders[$dpName])) {
             return;
         }
 
-        $pagelets = $this->dataProviders[$dpName];
+        $dp = $this->dataProviders[$dpName];
 
-        foreach ($pagelets as $idx => $pagelet) {
+        foreach ($dp['pagelets'] as $idx => $pagelet) {
            if(isset($this->pagelets[$pagelet->getUniqueId()])) {
                 $pagelet->pushData($data);
                 if(--$this->pagelets[$pagelet->getUniqueId()] === 0) {
                     $pagelet->triggerRender();
-                    unset($pagelets[$idx]);
+                    unset($dp[$idx]);
                 }
            }
         }

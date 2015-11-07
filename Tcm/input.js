@@ -10,14 +10,15 @@
  * @since 0.1.0
  */
 
-module.exports = {
+var questions = {
     path: prompt('path', namespace + ':' + type + ':' + name),
+    version: prompt('version', '1.0.0'),
     author: prompt('author', author),
     description: prompt('description'),
     dependencies: prompt('dependencies', function (data) {
         var deps = {};
         if (data) {
-            var keys = data.split(',');
+            var keys = data.split(/[,\s]/);
             keys.forEach(function (key) {
                 if (2 === key.split(':').length) {
                     key = key.replace(/:/, ':Component:');
@@ -30,3 +31,11 @@ module.exports = {
         return deps;
     })
 };
+
+if ('Pagelet' === type) {
+    questions['data-providers'] = prompt('data-providers', function (data) {
+        return data ? data.split(/[,\s]/) : [];
+    });
+}
+
+module.exports = questions;

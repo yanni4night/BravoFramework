@@ -1,3 +1,5 @@
+___deprecated___, see [excellent-web-framework](https://github.com/yanni4night/excellent-web-framework)
+
 # BravoFramework
 
 一种基于 PHP 的前端工程框架，包含：
